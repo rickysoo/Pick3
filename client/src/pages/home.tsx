@@ -41,9 +41,9 @@ export default function Home() {
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">
               <img 
-                src="attached_assets/ChatGPT Image Jun 11, 2025, 09_55_25 PM_1749650213079.png" 
+                src="attached_assets/ChatGPT Image Jun 11, 2025, 09_56_34 PM_1749650698943.png" 
                 alt="PickWise Logo" 
-                className="w-10 h-10 shadow-lg"
+                className="w-10 h-10 shadow-lg rounded-lg"
               />
               <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 PickWise
@@ -116,9 +116,9 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <img 
-              src="attached_assets/ChatGPT Image Jun 11, 2025, 09_55_25 PM_1749650213079.png" 
+              src="attached_assets/ChatGPT Image Jun 11, 2025, 09_56_34 PM_1749650698943.png" 
               alt="PickWise Logo" 
-              className="w-8 h-8 shadow-lg"
+              className="w-8 h-8 shadow-lg rounded-lg"
             />
             <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">PickWise</h3>
           </div>
