@@ -52,34 +52,17 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
           <table className="w-full">
             <thead>
               <tr>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900">Feature</th>
+                <th className="px-4 py-2 text-center text-sm font-semibold text-gray-900">Feature</th>
                 {products.map((product) => (
                   <th key={product.name} className="px-4 py-2 text-center text-sm font-semibold text-gray-900">
-                    <div className="flex flex-col items-center">
-                      {product.logoUrl ? (
-                        <img 
-                          src={product.logoUrl} 
-                          alt={`${product.name} logo`}
-                          className="w-8 h-8 object-contain mb-1"
-                          onError={(e) => {
-                            const target = e.target as HTMLElement;
-                            target.style.display = 'none';
-                          }}
-                        />
-                      ) : (
-                        <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mb-1 text-xs font-bold">
-                          {product.name.charAt(0)}
-                        </div>
-                      )}
-                      <span className="text-xs">{product.name}</span>
-                    </div>
+                    <span>{product.name}</span>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-blue-200">
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">Pricing</td>
+                <td className="px-4 py-3 text-sm font-medium text-gray-900 text-center">Pricing</td>
                 {products.map((product) => (
                   <td key={`${product.name}-pricing`} className="px-4 py-3 text-center">
                     <span className="font-semibold text-blue-600">{product.pricing}</span>
@@ -87,7 +70,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
                 ))}
               </tr>
               <tr>
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">User Rating</td>
+                <td className="px-4 py-3 text-sm font-medium text-gray-900 text-center">User Rating</td>
                 {products.map((product) => (
                   <td key={`${product.name}-rating`} className="px-4 py-3 text-center">
                     {product.rating ? (
@@ -112,7 +95,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Additional Features</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">Additional Features</th>
                 {products.map((product) => (
                   <th key={product.name} className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
                     {product.name}
@@ -123,7 +106,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
             <tbody className="divide-y divide-gray-200">
               {otherFeatures.map((feature) => (
                 <tr key={feature} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900 text-center">
                     {feature}
                   </td>
                   {products.map((product) => {

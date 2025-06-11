@@ -76,29 +76,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
     <Card className="hover-lift bg-white rounded-2xl shadow-lg p-6 animate-slide-up">
       <CardContent className="p-0">
         <div className="text-center mb-6">
-          {product.logoUrl ? (
-            <div className="w-16 h-16 bg-white border-2 border-gray-100 rounded-xl mx-auto mb-4 flex items-center justify-center overflow-hidden">
-              <img 
-                src={product.logoUrl} 
-                alt={`${product.name} logo`}
-                className="w-12 h-12 object-contain"
-                onError={(e) => {
-                  // Fallback to letter avatar if logo fails to load
-                  const target = e.target as HTMLElement;
-                  target.style.display = 'none';
-                  const parent = target.parentElement;
-                  if (parent) {
-                    parent.className = `w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`;
-                    parent.textContent = product.name.charAt(0);
-                  }
-                }}
-              />
-            </div>
-          ) : (
-            <div className={`w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`}>
-              {product.name.charAt(0)}
-            </div>
-          )}
+          <div className={`w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`}>
+            {product.name.charAt(0)}
+          </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
           <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
           {product.badge && (

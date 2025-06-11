@@ -69,37 +69,7 @@ export default function Home() {
             <SearchForm onSearch={handleSearch} isLoading={compareProductsMutation.isPending} />
           </div>
 
-          {/* Features */}
-          <div className="grid md:grid-cols-4 gap-6 mt-16">
-            <div className="text-center p-6">
-              <div className="w-12 h-12 gradient-primary rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <TrendingUp className="text-white" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">AI-Powered</h3>
-              <p className="text-gray-600 text-sm">Advanced AI analyzes thousands of products</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="w-12 h-12 gradient-blue rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <Scale className="text-white" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Fair Comparison</h3>
-              <p className="text-gray-600 text-sm">Unbiased feature-by-feature analysis</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="w-12 h-12 gradient-green rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <Users className="text-white" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Personalized</h3>
-              <p className="text-gray-600 text-sm">Tailored to your specific requirements</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                <Award className="text-white" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Expert Insights</h3>
-              <p className="text-gray-600 text-sm">Professional analysis and recommendations</p>
-            </div>
-          </div>
+
         </div>
       </section>
 

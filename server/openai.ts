@@ -21,7 +21,7 @@ Please respond with a JSON object containing:
    - "pricing": Exact pricing information from official sources or "Contact for pricing" if unknown
    - "rating": Only use verified ratings from official sources (number) or null if unknown
    - "website": Official website URL only - must be accurate
-   - "logoUrl": Direct URL to official brand logo image (search for official company logos from their websites, press kits, or reliable sources) or null if not available
+   - "logoUrl": null (do not include logo URLs)
    - "features": Object with 7-10 key features - use clear, readable names (e.g., "Baggage Included" not "baggageIncluded") - only include verified features as boolean or exact text
    - "badge": Optional badge text based on factual comparison (e.g., "Most Popular", "Lowest Price")
    - "badgeColor": Badge color (green, blue, orange, purple)
@@ -36,7 +36,7 @@ IMPORTANT RULES:
 - Ratings must be from verified review platforms
 - Website URLs must be accurate and official
 - Only compare features that can be verified
-- For logoUrl: Search for official brand logos from company websites, brand assets, or press kits
+- Do not include logoUrl in responses
 - Feature names must be readable (e.g., "Free Trial" not "freeTrial", "Mobile Support" not "mobileSupport")`;
 
     const response = await openai.chat.completions.create({
