@@ -12,7 +12,9 @@ interface ProductCardProps {
 const gradients = [
   "gradient-primary",
   "gradient-blue", 
-  "gradient-green"
+  "gradient-green",
+  "gradient-orange",
+  "gradient-pink"
 ];
 
 const badgeColors = {

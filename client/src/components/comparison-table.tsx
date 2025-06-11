@@ -111,7 +111,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
       </div>
       
       <div className="bg-gray-50 p-4 text-center">
-        <p className="text-sm text-gray-600 flex items-center justify-center flex-wrap gap-4">
+        <p className="text-sm text-gray-600 flex items-center justify-center flex-wrap gap-4 mb-4">
           <Info className="mr-2 h-4 w-4" />
           <strong>Legend:</strong> 
           <span className="inline-flex items-center">
@@ -124,6 +124,15 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
             <X className="text-red-400 mr-1" size={16} /> Not Available
           </span>
         </p>
+        <div className="border-t border-gray-200 pt-4">
+          <p className="text-xs text-orange-600 bg-orange-50 border border-orange-200 rounded-lg p-3 inline-block">
+            <svg className="inline mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.98-.833-2.75 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <strong>Disclaimer:</strong> All comparison data is AI-generated and may contain inaccuracies. 
+            Please verify information with official sources before making purchasing decisions.
+          </p>
+        </div>
       </div>
     </div>
   );

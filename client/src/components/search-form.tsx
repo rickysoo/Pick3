@@ -24,6 +24,13 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
     onSearch(data);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      form.handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-2xl p-8 mb-12 animate-slide-up hover-lift">
       <Form {...form}>
@@ -39,9 +46,12 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
 • Project management software for small teams in Canada, budget under $50/month
 • Video conferencing tools with screen sharing, works on mobile, GDPR compliant
 • CRM systems for real estate, integrates with email marketing, under $100/user
-• Cloud storage services, 1TB+ capacity, file sharing features, Europe-based servers"
+• Cloud storage services, 1TB+ capacity, file sharing features, Europe-based servers
+
+💡 Tip: Press Ctrl+Enter to start searching quickly!"
                     rows={6}
                     className="form-input border-2 border-gray-200 rounded-xl focus:border-blue-500 resize-none text-base"
+                    onKeyDown={handleKeyDown}
                     {...field}
                   />
                 </FormControl>
