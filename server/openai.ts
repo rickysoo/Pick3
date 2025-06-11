@@ -8,14 +8,14 @@ const openai = new OpenAI({
 
 export async function compareProducts(searchData: InsertSearchRequest): Promise<ComparisonResponse> {
   try {
-    const prompt = `You are a product comparison expert. Based on the following search query, find and compare 3 relevant products or services. 
+    const prompt = `You are a product comparison expert. Based on the following search query, find and compare relevant products or services. 
 
-CRITICAL: Only provide factual, verifiable information. If you don't have accurate data for any field, use "No data available" or leave it blank. Do not make up or estimate any information.
+CRITICAL: Only provide factual, verifiable information. If you cannot find sufficient authentic data, provide fewer results or indicate no results found. NEVER make up or estimate any information.
 
 Search Query: ${searchData.searchQuery}
 
 Please respond with a JSON object containing:
-1. "products": Array of 3 products, each with:
+1. "products": Array of 1-3 products (only include products you can verify exist), each with:
    - "name": Exact product name
    - "description": Brief factual description (max 100 chars) or "No data available"
    - "pricing": Short, concise pricing (e.g., "From $10/month", "Free", "$99", "Contact sales") - keep under 15 characters
@@ -27,8 +27,11 @@ Please respond with a JSON object containing:
    - "badgeColor": Badge color (green, blue, orange, purple)
 
 2. "features": Array of feature names that are actually compared across products
+3. "message": If no products found or fewer than expected, include an explanatory message
 
 IMPORTANT RULES:
+- If you cannot find any relevant products, return empty products array with message explaining no results found
+- If you can only find 1-2 products, return only those products with message explaining limited results
 - Never estimate or guess information
 - Use official sources only
 - If uncertain about any detail, mark as "No data available" or null
@@ -45,7 +48,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: "You are an expert product comparison analyst. Provide only factual, verifiable information from official sources. CRITICAL: Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. IMPORTANT: Every product must have a unique descriptive badge (e.g., 'Most Popular', 'Most Affordable', 'Best Value', 'Premium Choice'). Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
+          content: "You are an expert product comparison analyst. Provide only factual, verifiable information from official sources. CRITICAL: If you cannot find sufficient authentic data for a search query, return fewer results or no results with an explanatory message. Never generate fictional products or companies. Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. IMPORTANT: Every product must have a unique descriptive badge (e.g., 'Most Popular', 'Most Affordable', 'Best Value', 'Premium Choice'). Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
         },
         {
           role: "user",
@@ -58,9 +61,18 @@ IMPORTANT RULES:
 
     const result = JSON.parse(response.choices[0].message.content || "{}");
     
-    // Validate and ensure we have the expected structure
-    if (!result.products || !Array.isArray(result.products) || result.products.length !== 3) {
+    // Validate basic structure
+    if (!result.products || !Array.isArray(result.products)) {
       throw new Error("Invalid response format from OpenAI");
+    }
+
+    // Handle case where no products found
+    if (result.products.length === 0) {
+      return {
+        products: [],
+        features: [],
+        message: result.message || "No products found matching your search criteria. Please try a different search term."
+      };
     }
 
     // Pass through only what OpenAI provides - no synthetic fallbacks
@@ -78,7 +90,8 @@ IMPORTANT RULES:
 
     return {
       products: result.products,
-      features: result.features
+      features: result.features || [],
+      message: result.message
     };
 
   } catch (error) {

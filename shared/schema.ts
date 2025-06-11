@@ -34,4 +34,5 @@ export interface ComparisonResult {
 export interface ComparisonResponse {
   products: ComparisonResult[];
   features: string[];
+  message?: string;
 }
