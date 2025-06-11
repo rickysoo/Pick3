@@ -36,7 +36,10 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
             <h3 className="text-2xl font-bold mb-4">Need a different comparison?</h3>
             <p className="text-lg mb-6 opacity-90">Try another search with different criteria or explore more categories</p>
             <Button
-              onClick={onNewSearch}
+              onClick={() => {
+                onNewSearch();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="bg-white text-blue-600 font-bold py-4 px-12 rounded-xl hover:bg-gray-100 transition-all duration-200 transform hover:scale-110 shadow-2xl hover:shadow-3xl text-lg border-2 border-white"
             >
               <RotateCcw className="mr-3 h-5 w-5" />

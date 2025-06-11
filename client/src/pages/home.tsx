@@ -123,16 +123,18 @@ export default function Home() {
             <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">PickWise</h3>
           </div>
           <p className="text-gray-400 mb-4">AI-powered product comparison platform helping you make wise picking decisions.</p>
-          <a 
-            href="https://AICoach.my" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors mb-4"
-          >
-            💡 Want to dive deeper into AI? Learn AI
-          </a>
+          <p className="text-gray-400 mb-4">
+            Want to dive deeper into AI? <a 
+              href="https://AICoach.my" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors underline"
+            >
+              Learn AI
+            </a>
+          </p>
           <div className="border-t border-gray-800 mt-6 pt-6 text-gray-400">
-            <p>&copy; 2024 CompareIt. All rights reserved. Powered by AI technology.</p>
+            <p>&copy; 2024 PickWise. All rights reserved. Powered by AI technology.</p>
           </div>
         </div>
       </footer>
