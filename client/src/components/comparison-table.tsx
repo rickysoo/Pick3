@@ -50,7 +50,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
         <table className="w-full">
           <thead className="bg-gradient-to-r from-blue-50 to-purple-50">
             <tr>
-              <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">Feature</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900"></th>
               {products.map((product) => (
                 <th key={product.name} className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
                   {product.name}
@@ -74,15 +74,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
                 </td>
               ))}
             </tr>
-            {/* User Rating Row */}
-            <tr className="hover:bg-gray-50 transition-colors">
-              <td className="px-6 py-4 text-sm font-medium text-gray-900 text-center">User Rating</td>
-              {products.map((product) => (
-                <td key={`${product.name}-rating`} className="px-6 py-4 text-center">
-                  <span className="text-gray-400 text-xs">Check official reviews</span>
-                </td>
-              ))}
-            </tr>
+
             {/* Additional Features Section Header */}
             {otherFeatures.length > 0 && (
               <tr className="bg-blue-50">

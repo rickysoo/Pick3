@@ -41,7 +41,7 @@ export default function Home() {
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">
               <img 
-                src="/attached_assets/ChatGPT Image Jun 11, 2025, 09_55_25 PM_1749650213079.png" 
+                src="attached_assets/ChatGPT Image Jun 11, 2025, 09_55_25 PM_1749650213079.png" 
                 alt="PickWise Logo" 
                 className="w-10 h-10 shadow-lg"
               />
@@ -116,7 +116,7 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <img 
-              src="/attached_assets/ChatGPT Image Jun 11, 2025, 09_55_25 PM_1749650213079.png" 
+              src="attached_assets/ChatGPT Image Jun 11, 2025, 09_55_25 PM_1749650213079.png" 
               alt="PickWise Logo" 
               className="w-8 h-8 shadow-lg"
             />
