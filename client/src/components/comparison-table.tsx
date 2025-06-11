@@ -79,14 +79,7 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
               <td className="px-6 py-4 text-sm font-medium text-gray-900 text-center">User Rating</td>
               {products.map((product) => (
                 <td key={`${product.name}-rating`} className="px-6 py-4 text-center">
-                  {product.rating ? (
-                    <div className="flex items-center justify-center">
-                      <span className="text-yellow-500 mr-1">★</span>
-                      <span className="font-semibold">{product.rating.toFixed(1)}</span>
-                    </div>
-                  ) : (
-                    <span className="text-gray-400 text-xs">No data</span>
-                  )}
+                  <span className="text-gray-400 text-xs">Check official reviews</span>
                 </td>
               ))}
             </tr>

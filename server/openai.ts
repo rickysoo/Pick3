@@ -19,7 +19,7 @@ Please respond with a JSON object containing:
    - "name": Exact product name
    - "description": Brief factual description (max 100 chars) or "No data available"
    - "pricing": Exact pricing information from official sources or "Contact for pricing" if unknown
-   - "rating": Only use verified ratings from official sources (number) or null if unknown
+   - "rating": NEVER provide ratings - always set to null since you cannot verify authentic rating sources
    - "website": Official website URL only - must be accurate
    - "logoUrl": null (do not include logo URLs)
    - "features": Object with 7-10 key features - use clear, readable names (e.g., "Baggage Included" not "baggageIncluded") - only include verified features as boolean or exact text
@@ -33,7 +33,7 @@ IMPORTANT RULES:
 - Use official sources only
 - If uncertain about any detail, mark as "No data available" or null
 - Pricing must be exact from official sources
-- Ratings must be from verified review platforms
+- NEVER include ratings - always set rating to null as AI cannot verify authentic rating sources
 - Website URLs must be accurate and official
 - Only compare features that can be verified
 - Do not include logoUrl in responses
@@ -44,7 +44,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: "You are an expert product comparison analyst with access to current market data. Search for and provide only factual, verifiable information from official sources. Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
+          content: "You are an expert product comparison analyst. Provide only factual, verifiable information from official sources. CRITICAL: Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
         },
         {
           role: "user",
@@ -67,7 +67,7 @@ IMPORTANT RULES:
       name: product.name || `Product ${index + 1}`,
       description: product.description || "No data available",
       pricing: product.pricing || "Contact for pricing",
-      rating: product.rating !== null && product.rating !== undefined ? Math.min(5, Math.max(1, product.rating)) : null,
+      rating: null, // Never show ratings as AI cannot verify authentic sources
       website: product.website || "#",
       logoUrl: product.logoUrl || null,
       features: product.features || {},

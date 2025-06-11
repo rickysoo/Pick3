@@ -27,29 +27,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   const badgeColorClass = badgeColors[product.badgeColor as keyof typeof badgeColors] || "bg-blue-100 text-blue-800";
 
   const renderStars = (rating: number | null) => {
-    if (rating === null) {
-      return (
-        <span className="text-gray-500 text-sm">No rating data</span>
-      );
-    }
-
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
     return (
-      <div className="flex items-center">
-        <div className="flex text-yellow-400 mr-2">
-          {[...Array(fullStars)].map((_, i) => (
-            <Star key={i} size={16} fill="currentColor" />
-          ))}
-          {hasHalfStar && <Star size={16} fill="currentColor" className="opacity-50" />}
-          {[...Array(emptyStars)].map((_, i) => (
-            <Star key={i} size={16} className="text-gray-300" />
-          ))}
-        </div>
-        <span className="text-gray-600 text-sm">{rating.toFixed(1)}/5</span>
-      </div>
+      <span className="text-gray-500 text-sm">Check official reviews</span>
     );
   };
 
