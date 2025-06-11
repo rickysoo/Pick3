@@ -1,6 +1,10 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import { initGA } from "./lib/analytics";
+
+// Initialize Google Analytics
+initGA();
 
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
