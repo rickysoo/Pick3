@@ -23,7 +23,7 @@ Please respond with a JSON object containing:
    - "website": Official website URL only - must be accurate
    - "logoUrl": null (do not include logo URLs)
    - "features": Object with 7-10 key features - use clear, readable names (e.g., "Baggage Included" not "baggageIncluded") - only include verified features as boolean or exact text
-   - "badge": Optional badge text based on factual comparison (e.g., "Most Popular", "Lowest Price")
+   - "badge": REQUIRED badge text for each product based on factual comparison (e.g., "Most Popular", "Most Affordable", "Best Value", "Premium Choice", "Editor's Pick") - ensure each product gets a unique descriptive badge
    - "badgeColor": Badge color (green, blue, orange, purple)
 
 2. "features": Array of feature names that are actually compared across products
@@ -37,14 +37,15 @@ IMPORTANT RULES:
 - Website URLs must be accurate and official
 - Only compare features that can be verified
 - Do not include logoUrl in responses
-- Feature names must be readable (e.g., "Free Trial" not "freeTrial", "Mobile Support" not "mobileSupport")`;
+- Feature names must be readable (e.g., "Free Trial" not "freeTrial", "Mobile Support" not "mobileSupport")
+- CRITICAL: Every product must have a unique descriptive badge (e.g., "Most Popular", "Most Affordable", "Best Value")`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: "You are an expert product comparison analyst. Provide only factual, verifiable information from official sources. CRITICAL: Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
+          content: "You are an expert product comparison analyst. Provide only factual, verifiable information from official sources. CRITICAL: Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. IMPORTANT: Every product must have a unique descriptive badge (e.g., 'Most Popular', 'Most Affordable', 'Best Value', 'Premium Choice'). Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
         },
         {
           role: "user",

@@ -133,9 +133,7 @@ export default function Home() {
               Learn AI
             </a>
           </p>
-          <div className="border-t border-gray-800 mt-6 pt-6 text-gray-400">
-            <p>&copy; 2024 PickWise. All rights reserved. Powered by AI technology.</p>
-          </div>
+
         </div>
       </footer>
     </div>
