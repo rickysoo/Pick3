@@ -110,6 +110,30 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
                 })}
               </tr>
             ))}
+            
+            {/* Sources Row */}
+            <tr className="bg-yellow-50 border-t-2 border-yellow-200">
+              <td className="px-6 py-4 text-sm font-medium text-gray-900 text-center">Verify Information</td>
+              {products.map((product) => (
+                <td key={`${product.name}-source`} className="px-6 py-4 text-center">
+                  {product.website && product.website !== "#" ? (
+                    <a 
+                      href={product.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-xs text-blue-600 hover:text-blue-800 underline"
+                    >
+                      <svg className="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Official Website
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 text-xs">No website provided</span>
+                  )}
+                </td>
+              ))}
+            </tr>
           </tbody>
         </table>
       </div>
