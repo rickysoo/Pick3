@@ -1,0 +1,25 @@
+{
+  "name": "Pick3 - AI Product Comparison",
+  "short_name": "Pick3",
+  "description": "AI-powered product comparison tool that finds your top 3 options instantly. Compare products, services, and brands with smart recommendations tailored to your needs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/pick3-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pick3-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

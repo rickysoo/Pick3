@@ -59,7 +59,7 @@ export default function Home() {
         <div className="container mx-auto max-w-4xl text-center">
           <div className="animate-fade-in">
             <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Shopping For Your <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Perfect Brand?</span>
+              Find Your <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Perfect Brand</span>
             </h2>
             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
               🤔 Can't decide? Let us get you the top 3. You pick the winner!
