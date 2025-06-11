@@ -1,0 +1,207 @@
+import { useState, useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import SearchForm from "@/components/search-form";
+import LoadingState from "@/components/loading-state";
+import ComparisonResults from "@/components/comparison-results";
+import { Scale, Award, Users, TrendingUp } from "lucide-react";
+import type { ComparisonResponse } from "@shared/schema";
+
+export default function Home() {
+  const [comparisonData, setComparisonData] = useState<ComparisonResponse | null>(null);
+  const resultsRef = useRef<HTMLElement>(null);
+  const searchFormRef = useRef<HTMLDivElement>(null);
+
+  const compareProductsMutation = useMutation({
+    mutationFn: async (searchData: any) => {
+      const response = await apiRequest("POST", "/api/compare", searchData);
+      return await response.json();
+    },
+    onSuccess: (data) => {
+      setComparisonData(data);
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    },
+  });
+
+  const handleSearch = (searchData: any) => {
+    compareProductsMutation.mutate(searchData);
+  };
+
+  const scrollToSearch = () => {
+    searchFormRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <div className="min-h-screen gradient-bg">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
+                <Scale className="text-white" size={16} />
+              </div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                CompareIt
+              </h1>
+            </div>
+            <nav className="hidden md:flex space-x-6">
+              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">How it works</a>
+              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Categories</a>
+              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">About</a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <div className="animate-fade-in">
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Find the <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Perfect Product</span>
+            </h2>
+            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+              Get AI-powered comparisons of products and services tailored to your specific needs, location, and requirements.
+            </p>
+          </div>
+
+          {/* Search Form */}
+          <div ref={searchFormRef}>
+            <SearchForm onSearch={handleSearch} isLoading={compareProductsMutation.isPending} />
+          </div>
+
+          {/* Features */}
+          <div className="grid md:grid-cols-4 gap-6 mt-16">
+            <div className="text-center p-6">
+              <div className="w-12 h-12 gradient-primary rounded-lg mx-auto mb-4 flex items-center justify-center">
+                <TrendingUp className="text-white" size={24} />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">AI-Powered</h3>
+              <p className="text-gray-600 text-sm">Advanced AI analyzes thousands of products</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-12 h-12 gradient-blue rounded-lg mx-auto mb-4 flex items-center justify-center">
+                <Scale className="text-white" size={24} />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Fair Comparison</h3>
+              <p className="text-gray-600 text-sm">Unbiased feature-by-feature analysis</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-12 h-12 gradient-green rounded-lg mx-auto mb-4 flex items-center justify-center">
+                <Users className="text-white" size={24} />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Personalized</h3>
+              <p className="text-gray-600 text-sm">Tailored to your specific requirements</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                <Award className="text-white" size={24} />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Expert Insights</h3>
+              <p className="text-gray-600 text-sm">Professional analysis and recommendations</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Loading State */}
+      {compareProductsMutation.isPending && <LoadingState />}
+
+      {/* Error State */}
+      {compareProductsMutation.error && (
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-4xl text-center">
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-8">
+              <div className="text-red-500 mb-4">
+                <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-red-900 mb-2">Search Failed</h3>
+              <p className="text-red-700 mb-4">
+                {compareProductsMutation.error instanceof Error 
+                  ? compareProductsMutation.error.message 
+                  : "Sorry, we couldn't process your search. Please try again."}
+              </p>
+              <button
+                onClick={() => compareProductsMutation.reset()}
+                className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Comparison Results */}
+      {comparisonData && (
+        <section ref={resultsRef}>
+          <ComparisonResults data={comparisonData} onNewSearch={scrollToSearch} />
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 mt-20">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
+                  <Scale className="text-white" size={16} />
+                </div>
+                <h3 className="text-xl font-bold">CompareIt</h3>
+              </div>
+              <p className="text-gray-400 mb-4">AI-powered product comparison platform helping you make informed decisions.</p>
+              <a 
+                href="https://AICoach.my" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                💡 Want to dive deeper into AI? Learn AI
+              </a>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">How it works</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Categories</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 CompareIt. All rights reserved. Powered by AI technology.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
