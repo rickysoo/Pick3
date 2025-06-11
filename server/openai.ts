@@ -94,7 +94,7 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
       messages: [
         {
           role: "system",
-          content: "Generate exactly 3 diverse, realistic product/service comparison search examples. Make them specific with details like budget, location, or requirements. Cover different industries/categories each time. Keep examples under 80 characters each. Respond with JSON format: {\"examples\": [\"example1\", \"example2\", \"example3\"]}"
+          content: "Generate exactly 3 diverse, catchy product search examples. Make them specific and fun with details like budget or cool features. Cover different categories. Keep under 70 characters each. Make them sound exciting and modern. Respond with JSON format: {\"examples\": [\"example1\", \"example2\", \"example3\"]}"
         },
         {
           role: "user",
