@@ -30,6 +30,10 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
     return product.features[feature];
   };
 
+  // Separate key features from other features
+  const keyFeatures = ["Pricing", "User Rating"];
+  const otherFeatures = features.filter(f => !keyFeatures.includes(f));
+
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-slide-up">
       <div className="gradient-primary p-6">
@@ -41,44 +45,108 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
         </h3>
       </div>
       
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Features</th>
-              {products.map((product) => (
-                <th key={product.name} className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                  {product.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {features.map((feature) => (
-              <tr key={feature} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 text-sm font-medium text-gray-900 capitalize">
-                  {feature.replace(/([A-Z])/g, ' $1').trim()}
-                </td>
-                {products.map((product) => {
-                  const value = getFeatureValue(product, feature);
-                  return (
-                    <td key={`${product.name}-${feature}`} className="px-6 py-4 text-center">
-                      <div className="flex items-center justify-center">
-                        {getFeatureIcon(value)}
-                        {typeof value === "string" && !["true", "false"].includes(value.toLowerCase()) && (
-                          <span className="ml-2 text-xs text-gray-600 max-w-20 truncate">
-                            {value}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                  );
-                })}
+      {/* Key Features Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4">
+        <h4 className="text-lg font-semibold text-gray-800 mb-3">Key Information</h4>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900">Feature</th>
+                {products.map((product) => (
+                  <th key={product.name} className="px-4 py-2 text-center text-sm font-semibold text-gray-900">
+                    <div className="flex flex-col items-center">
+                      {product.logoUrl ? (
+                        <img 
+                          src={product.logoUrl} 
+                          alt={`${product.name} logo`}
+                          className="w-8 h-8 object-contain mb-1"
+                          onError={(e) => {
+                            const target = e.target as HTMLElement;
+                            target.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mb-1 text-xs font-bold">
+                          {product.name.charAt(0)}
+                        </div>
+                      )}
+                      <span className="text-xs">{product.name}</span>
+                    </div>
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <tr className="border-b border-blue-200">
+                <td className="px-4 py-3 text-sm font-medium text-gray-900">Pricing</td>
+                {products.map((product) => (
+                  <td key={`${product.name}-pricing`} className="px-4 py-3 text-center">
+                    <span className="font-semibold text-blue-600">{product.pricing}</span>
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className="px-4 py-3 text-sm font-medium text-gray-900">User Rating</td>
+                {products.map((product) => (
+                  <td key={`${product.name}-rating`} className="px-4 py-3 text-center">
+                    {product.rating ? (
+                      <div className="flex items-center justify-center">
+                        <span className="text-yellow-500 mr-1">★</span>
+                        <span className="font-semibold">{product.rating.toFixed(1)}</span>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 text-xs">No data</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      {/* Other Features Section */}
+      {otherFeatures.length > 0 && (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Additional Features</th>
+                {products.map((product) => (
+                  <th key={product.name} className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
+                    {product.name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {otherFeatures.map((feature) => (
+                <tr key={feature} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    {feature}
+                  </td>
+                  {products.map((product) => {
+                    const value = getFeatureValue(product, feature);
+                    return (
+                      <td key={`${product.name}-${feature}`} className="px-6 py-4 text-center">
+                        <div className="flex items-center justify-center">
+                          {getFeatureIcon(value)}
+                          {typeof value === "string" && !["true", "false"].includes(value.toLowerCase()) && (
+                            <span className="ml-2 text-xs text-gray-600 max-w-20 truncate">
+                              {value}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       
       <div className="bg-gray-50 p-4 text-center">
         <p className="text-sm text-gray-600 flex items-center justify-center flex-wrap gap-4">

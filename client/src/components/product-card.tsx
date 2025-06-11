@@ -110,19 +110,20 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         </div>
         
         <div className="space-y-3 mb-6">
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-600">Pricing</span>
-            <span className="font-semibold text-gray-900">{product.pricing}</span>
+          {/* Key Information - Always shown */}
+          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
+            <span className="text-gray-700 font-medium">Pricing</span>
+            <span className="font-bold text-gray-900">{product.pricing}</span>
           </div>
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-600">User Rating</span>
+          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
+            <span className="text-gray-700 font-medium">User Rating</span>
             {renderStars(product.rating)}
           </div>
           
-          {/* Display first few features */}
+          {/* Top 2 Most Important Features */}
           {Object.entries(product.features).slice(0, 2).map(([feature, value]) => (
             <div key={feature} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-600">{feature}</span>
+              <span className="text-gray-600 capitalize">{feature}</span>
               <div className="flex items-center">
                 {getFeatureIcon(value)}
                 {typeof value === "string" && !["true", "false"].includes(value.toLowerCase()) && (
