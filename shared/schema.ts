@@ -4,12 +4,7 @@ import { z } from "zod";
 
 export const searchRequests = pgTable("search_requests", {
   id: serial("id").primaryKey(),
-  productName: text("product_name").notNull(),
-  category: text("category"),
-  region: text("region"),
-  language: text("language").default("english"),
-  useCase: text("use_case"),
-  limitations: text("limitations"),
+  searchQuery: text("search_query").notNull(),
   results: json("results").$type<ComparisonResult[]>(),
   createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
 });

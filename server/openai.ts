@@ -8,15 +8,9 @@ const openai = new OpenAI({
 
 export async function compareProducts(searchData: InsertSearchRequest): Promise<ComparisonResponse> {
   try {
-    const prompt = `You are a product comparison expert. Based on the following search criteria, find and compare 3 relevant products or services. Provide detailed, accurate information.
+    const prompt = `You are a product comparison expert. Based on the following search query, find and compare 3 relevant products or services. Provide detailed, accurate information.
 
-Search Criteria:
-- Product/Service: ${searchData.productName}
-- Category: ${searchData.category || "General"}
-- Region: ${searchData.region || "Global"}
-- Language: ${searchData.language || "English"}
-- Use Case: ${searchData.useCase || "General use"}
-- Limitations/Requirements: ${searchData.limitations || "None specified"}
+Search Query: ${searchData.searchQuery}
 
 Please respond with a JSON object containing:
 1. "products": Array of 3 products, each with:

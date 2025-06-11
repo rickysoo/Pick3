@@ -47,11 +47,7 @@ export default function Home() {
                 CompareIt
               </h1>
             </div>
-            <nav className="hidden md:flex space-x-6">
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">How it works</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Categories</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">About</a>
-            </nav>
+
           </div>
         </div>
       </header>
@@ -145,59 +141,24 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 mt-20">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                  <Scale className="text-white" size={16} />
-                </div>
-                <h3 className="text-xl font-bold">CompareIt</h3>
-              </div>
-              <p className="text-gray-400 mb-4">AI-powered product comparison platform helping you make informed decisions.</p>
-              <a 
-                href="https://AICoach.my" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                💡 Want to dive deeper into AI? Learn AI
-              </a>
+      <footer className="bg-gray-900 text-white py-8 mt-20">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
+              <Scale className="text-white" size={16} />
             </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">How it works</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Categories</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
-              </ul>
-            </div>
+            <h3 className="text-xl font-bold">CompareIt</h3>
           </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <p className="text-gray-400 mb-4">AI-powered product comparison platform helping you make informed decisions.</p>
+          <a 
+            href="https://AICoach.my" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors mb-4"
+          >
+            💡 Want to dive deeper into AI? Learn AI
+          </a>
+          <div className="border-t border-gray-800 mt-6 pt-6 text-gray-400">
             <p>&copy; 2024 CompareIt. All rights reserved. Powered by AI technology.</p>
           </div>
         </div>

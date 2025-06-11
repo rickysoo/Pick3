@@ -18,8 +18,8 @@ export class MemStorage implements IStorage {
   async createSearchRequest(insertRequest: InsertSearchRequest): Promise<SearchRequest> {
     const id = this.currentId++;
     const request: SearchRequest = {
-      ...insertRequest,
       id,
+      searchQuery: insertRequest.searchQuery,
       results: null,
       createdAt: new Date().toISOString(),
     };
