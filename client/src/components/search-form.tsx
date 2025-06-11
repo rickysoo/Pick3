@@ -67,7 +67,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                 <FormControl>
                   <Textarea
                     placeholder={placeholderText}
-                    rows={4}
+                    rows={5}
                     className="form-input border-2 border-gray-200 rounded-xl focus:border-blue-500 resize-none text-sm sm:text-base p-3 sm:p-4"
                     onKeyDown={handleKeyDown}
                     {...field}

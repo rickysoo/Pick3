@@ -29,11 +29,11 @@ Please respond with a JSON object containing:
    - "rating": NEVER provide ratings - always set to null since you cannot verify authentic rating sources
    - "website": Official website URL only - must be accurate
    - "logoUrl": null (do not include logo URLs)
-   - "features": Object with 7-10 key features - use clear, readable names (e.g., "Baggage Included" not "baggageIncluded") - only include verified features as boolean or exact text
+   - "features": Object with 10-20 key features for complex products (smartphones, laptops) or 5-10 for simpler products - use clear, readable names (e.g., "Water Resistance" not "waterResistance") - include specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features
    - "badge": REQUIRED badge text for each product based on factual comparison (e.g., "Most Popular", "Most Affordable", "Best Value", "Premium Choice", "Editor's Pick") - ensure each product gets a unique descriptive badge
    - "badgeColor": Badge color (green, blue, orange, purple)
 
-2. "features": Array of feature names that are actually compared across products
+2. "features": Array of 5-20 feature names that are compared across products (include key specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features, etc. for comprehensive comparison)
 3. "message": If no products found or fewer than expected, include an explanatory message
 
 IMPORTANT RULES:
@@ -42,7 +42,7 @@ IMPORTANT RULES:
 - Include realistic pricing ranges based on the search criteria
 - Always set rating to null
 - Use official website URLs from major manufacturers
-- Compare standard features relevant to the product category
+- Compare 5-20 features relevant to the product category (more features for complex products like smartphones/laptops, fewer for simple products)
 - Each product needs a unique badge (Most Popular, Best Value, Premium Choice, etc.)
 - Only return "no results" for truly impossible or non-existent product categories
 - Feature names should be readable (e.g., "Fast Charging" not "fastCharging")
@@ -53,7 +53,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: `You are a product comparison expert helping users find real products that exist in the market. For standard product categories (smartphones, laptops, headphones, appliances, etc.), always provide 3 actual products from established brands. Use real product names from companies like Samsung, Apple, Xiaomi, Sony, LG, Anker, etc. Include realistic pricing that matches typical market rates for the specified budget range. Set rating to null. Give each product a unique badge. Only return empty results for truly impossible searches like "time travel machines" or "unicorn saddles".`
+          content: `You are a product comparison expert helping users find real products that exist in the market. For standard product categories (smartphones, laptops, headphones, appliances, etc.), always provide 3 actual products from established brands. Use real product names from companies like Samsung, Apple, Xiaomi, Sony, LG, Anker, etc. Include realistic pricing that matches typical market rates for the specified budget range. Set rating to null. Give each product a unique badge. For smartphones/tablets/laptops: include 15-20 features (display, processor, RAM, storage, camera specs, battery, connectivity, build quality, security features, software, special features). For simpler products: include 8-12 relevant features. Only return empty results for truly impossible searches like "time travel machines" or "unicorn saddles".`
         },
         {
           role: "user",
