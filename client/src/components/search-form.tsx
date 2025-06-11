@@ -67,8 +67,8 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                 <FormControl>
                   <Textarea
                     placeholder={placeholderText}
-                    rows={6}
-                    className="form-input border-2 border-gray-200 rounded-xl focus:border-blue-500 resize-none text-base"
+                    rows={4}
+                    className="form-input border-2 border-gray-200 rounded-xl focus:border-blue-500 resize-none text-sm sm:text-base p-3 sm:p-4"
                     onKeyDown={handleKeyDown}
                     {...field}
                   />
@@ -81,7 +81,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 hover:from-purple-700 hover:via-blue-700 hover:to-indigo-700 text-white font-semibold py-4 px-8 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 hover:from-purple-700 hover:via-blue-700 hover:to-indigo-700 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
           >
             {isLoading ? (
               <>
