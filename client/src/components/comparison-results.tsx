@@ -3,6 +3,7 @@ import ComparisonTable from "./comparison-table";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
 import type { ComparisonResponse } from "@shared/schema";
+import { trackEvent } from "@/lib/analytics";
 
 interface ComparisonResultsProps {
   data: ComparisonResponse;
@@ -37,6 +38,7 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
             <p className="text-lg mb-6 opacity-90">Try a new search and discover more awesome picks</p>
             <Button
               onClick={() => {
+                trackEvent('new_search', 'navigation', 'search_again_button');
                 onNewSearch();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}

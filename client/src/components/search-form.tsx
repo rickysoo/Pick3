@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Search, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { InsertSearchRequest } from "@shared/schema";
+import { trackEvent } from "@/lib/analytics";
 
 interface SearchFormProps {
   onSearch: (data: InsertSearchRequest) => void;
@@ -43,6 +44,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
   }, []);
 
   const onSubmit = (data: InsertSearchRequest) => {
+    trackEvent('search_product', 'search', data.searchQuery);
     onSearch(data);
   };
 
