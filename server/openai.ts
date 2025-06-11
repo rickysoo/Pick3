@@ -8,9 +8,16 @@ const openai = new OpenAI({
 
 export async function compareProducts(searchData: InsertSearchRequest): Promise<ComparisonResponse> {
   try {
-    const prompt = `You are a product comparison expert. Based on the following search query, find and compare relevant products or services. 
+    // Get current date for context
+    const currentDate = new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
 
-CRITICAL: Only provide factual, verifiable information. If you cannot find sufficient authentic data, provide fewer results or indicate no results found. NEVER make up or estimate any information.
+    const prompt = `You are a product comparison expert. Today's date is ${currentDate}. Based on the following search query, find and compare relevant products or services using the most current information available as of this date.
+
+CRITICAL: Only provide factual, verifiable information from current sources. Ensure all product names, services, and companies are up-to-date (e.g., use "Google Gemini" not "Google Bard", current company names, etc.). If you cannot find sufficient authentic current data, provide fewer results or indicate no results found. NEVER make up or estimate any information.
 
 Search Query: ${searchData.searchQuery}
 
@@ -48,7 +55,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: "You are an expert product comparison analyst. Provide only factual, verifiable information from official sources. CRITICAL: If you cannot find sufficient authentic data for a search query, return fewer results or no results with an explanatory message. Never generate fictional products or companies. Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. IMPORTANT: Every product must have a unique descriptive badge (e.g., 'Most Popular', 'Most Affordable', 'Best Value', 'Premium Choice'). Never estimate, approximate, or generate fictional data. If specific information is not available from reliable sources, explicitly state 'No data available' or use null values."
+          content: `You are an expert product comparison analyst with access to current information. Today's date is ${currentDate}. Provide only factual, verifiable information from current official sources. CRITICAL: Use up-to-date product names and company information (e.g., 'Google Gemini' not 'Google Bard', current pricing, active services). If you cannot find sufficient authentic current data for a search query, return fewer results or no results with an explanatory message. Never generate fictional products or companies. Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. IMPORTANT: Every product must have a unique descriptive badge (e.g., 'Most Popular', 'Most Affordable', 'Best Value', 'Premium Choice'). Never estimate, approximate, or generate fictional data. If specific information is not available from reliable current sources, explicitly state 'No data available' or use null values.`
         },
         {
           role: "user",
