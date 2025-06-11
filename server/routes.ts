@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertSearchRequestSchema } from "@shared/schema";
-import { compareProducts } from "./openai";
+import { compareProducts, generatePlaceholderExamples } from "./openai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Create a new comparison search
@@ -48,6 +48,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error in /api/compare/:id:", error);
       res.status(500).json({ message: "Failed to retrieve comparison" });
+    }
+  });
+
+  // Generate dynamic placeholder examples
+  app.get("/api/placeholder-examples", async (req, res) => {
+    try {
+      const examples = await generatePlaceholderExamples();
+      res.json({ examples });
+    } catch (error) {
+      console.error("Error generating placeholder examples:", error);
+      // Return fallback examples if OpenAI fails
+      res.json({ 
+        examples: [
+          "Project management software for small teams, budget under $50/month",
+          "Video conferencing tools with screen sharing and mobile support",
+          "Cloud storage services with 1TB+ capacity and file sharing features"
+        ]
+      });
     }
   });
 

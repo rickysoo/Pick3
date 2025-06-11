@@ -86,3 +86,35 @@ IMPORTANT RULES:
     throw new Error(`Failed to generate product comparison: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
 }
+
+export async function generatePlaceholderExamples(): Promise<string[]> {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: "Generate exactly 3 diverse, realistic product/service comparison search examples. Make them specific with details like budget, location, or requirements. Cover different industries/categories each time. Keep examples under 80 characters each. Respond with JSON format: {\"examples\": [\"example1\", \"example2\", \"example3\"]}"
+        },
+        {
+          role: "user",
+          content: "Generate 3 diverse product comparison search examples with specific details and requirements."
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 300,
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || '{}');
+    
+    if (result.examples && Array.isArray(result.examples) && result.examples.length === 3) {
+      return result.examples;
+    }
+
+    throw new Error("Invalid response format from OpenAI for placeholder examples");
+
+  } catch (error) {
+    console.error("Error generating placeholder examples:", error);
+    throw error;
+  }
+}

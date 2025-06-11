@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Search, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import type { InsertSearchRequest } from "@shared/schema";
 
 interface SearchFormProps {
@@ -13,12 +14,33 @@ interface SearchFormProps {
 }
 
 export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
+  const [placeholderText, setPlaceholderText] = useState("Describe what you're looking for...\n\nTips: Press Ctrl+Enter to start searching!");
+  
   const form = useForm<InsertSearchRequest>({
     resolver: zodResolver(insertSearchRequestSchema),
     defaultValues: {
       searchQuery: "",
     },
   });
+
+  useEffect(() => {
+    // Generate dynamic placeholder examples on component mount
+    const generatePlaceholderExamples = async () => {
+      try {
+        const response = await fetch('/api/placeholder-examples');
+        const data = await response.json();
+        if (data.examples) {
+          const exampleText = data.examples.map((example: string) => `• ${example}`).join('\n');
+          setPlaceholderText(`Describe what you're looking for...\n\n${exampleText}\n\nTips: Press Ctrl+Enter to start searching!`);
+        }
+      } catch (error) {
+        // Keep default placeholder if API fails
+        console.log('Using default placeholder examples');
+      }
+    };
+
+    generatePlaceholderExamples();
+  }, []);
 
   const onSubmit = (data: InsertSearchRequest) => {
     onSearch(data);
@@ -42,13 +64,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
               <FormItem>
                 <FormControl>
                   <Textarea
-                    placeholder="Describe what you're looking for...
-• Project management software for small teams in Canada, budget under $50/month
-• Video conferencing tools with screen sharing, works on mobile, GDPR compliant
-• CRM systems for real estate, integrates with email marketing, under $100/user
-• Cloud storage services, 1TB+ capacity, file sharing features, Europe-based servers
-
-💡 Tip: Press Ctrl+Enter to start searching quickly!"
+                    placeholder={placeholderText}
                     rows={6}
                     className="form-input border-2 border-gray-200 rounded-xl focus:border-blue-500 resize-none text-base"
                     onKeyDown={handleKeyDown}
