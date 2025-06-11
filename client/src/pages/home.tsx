@@ -6,6 +6,7 @@ import LoadingState from "@/components/loading-state";
 import ComparisonResults from "@/components/comparison-results";
 import { Scale, Award, Users, TrendingUp } from "lucide-react";
 import type { ComparisonResponse } from "@shared/schema";
+import p3Logo from "@assets/p3-logo_1749653153117.png";
 
 export default function Home() {
   const [comparisonData, setComparisonData] = useState<ComparisonResponse | null>(null);
@@ -41,7 +42,7 @@ export default function Home() {
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">
               <img 
-                src="/p3-logo.png" 
+                src={p3Logo} 
                 alt="Pick3 Logo" 
                 className="w-10 h-10"
               />
@@ -116,7 +117,7 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <img 
-              src="/p3-logo.png" 
+              src={p3Logo} 
               alt="Pick3 Logo" 
               className="w-8 h-8"
             />
