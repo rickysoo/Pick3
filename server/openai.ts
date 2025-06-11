@@ -18,7 +18,7 @@ Please respond with a JSON object containing:
 1. "products": Array of 3 products, each with:
    - "name": Exact product name
    - "description": Brief factual description (max 100 chars) or "No data available"
-   - "pricing": Exact pricing information from official sources or "Contact for pricing" if unknown
+   - "pricing": Short, concise pricing (e.g., "From $10/month", "Free", "$99", "Contact sales") - keep under 15 characters
    - "rating": NEVER provide ratings - always set to null since you cannot verify authentic rating sources
    - "website": Official website URL only - must be accurate
    - "logoUrl": null (do not include logo URLs)
@@ -32,7 +32,7 @@ IMPORTANT RULES:
 - Never estimate or guess information
 - Use official sources only
 - If uncertain about any detail, mark as "No data available" or null
-- Pricing must be exact from official sources
+- Pricing must be concise and from official sources (under 15 characters)
 - NEVER include ratings - always set rating to null as AI cannot verify authentic rating sources
 - Website URLs must be accurate and official
 - Only compare features that can be verified
@@ -66,7 +66,7 @@ IMPORTANT RULES:
     result.products = result.products.map((product: any, index: number) => ({
       name: product.name || `Product ${index + 1}`,
       description: product.description || "No data available",
-      pricing: product.pricing || "Contact for pricing",
+      pricing: product.pricing || "Contact sales",
       rating: null, // Never show ratings as AI cannot verify authentic sources
       website: product.website || "#",
       logoUrl: product.logoUrl || null,
