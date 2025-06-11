@@ -1,5 +1,6 @@
 import { Check, X, Minus, Info } from "lucide-react";
 import type { ComparisonResult } from "@shared/schema";
+import { trackEvent } from "@/lib/analytics";
 
 interface ComparisonTableProps {
   products: ComparisonResult[];

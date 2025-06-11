@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Star, Check, Minus, X } from "lucide-react";
 import type { ComparisonResult } from "@shared/schema";
+import { trackEvent } from "@/lib/analytics";
 
 interface ProductCardProps {
   product: ComparisonResult;
@@ -97,6 +98,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center"
+              onClick={() => trackEvent('product_click', 'outbound', product.name)}
             >
               <ExternalLink className="mr-2" size={16} />
               Visit {product.name}
