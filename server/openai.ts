@@ -17,7 +17,7 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
 
     const prompt = `You are a product comparison expert. Today's date is ${currentDate}. Based on the following search query, find and compare relevant products or services using the most current information available as of this date.
 
-IMPORTANT: Provide factual information about real products and services that exist. Use current product names and companies (e.g., "Google Gemini" not "Google Bard"). For popular product categories with many options, select 3 representative examples from different companies/brands. Only return "no results" if the search query is for something that genuinely doesn't exist or is extremely niche with no viable options.
+IMPORTANT: Find real products from established brands that match the search criteria. Use actual product names from companies like Samsung, Apple, Xiaomi, Sony, etc. For price-based searches, recommend products that realistically fall within that price range. Return 3 products when possible, representing different value propositions (budget, mid-range, premium within the specified range). Only return "no results" for impossible or fictional product categories.
 
 Search Query: ${searchData.searchQuery}
 
@@ -53,7 +53,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: `You are an expert product comparison analyst. Today's date is ${currentDate}. Provide factual information about real products and services from reputable companies. Use current product names (e.g., 'Google Gemini' not 'Google Bard'). For popular product categories, find 3 representative options from different brands/companies. Only return no results for genuinely non-existent or extremely niche categories. Never generate fictional companies. Set rating to null always. Each product needs a unique badge (Most Popular, Most Affordable, Best Value, Premium Choice, etc.). Use real pricing from official sources when available, otherwise use "Contact for pricing" or "See website".`
+          content: `You are a product comparison expert helping users find real products that exist in the market. For standard product categories (smartphones, laptops, headphones, appliances, etc.), always provide 3 actual products from established brands. Use real product names from companies like Samsung, Apple, Xiaomi, Sony, LG, Anker, etc. Include realistic pricing that matches typical market rates for the specified budget range. Set rating to null. Give each product a unique badge. Only return empty results for truly impossible searches like "time travel machines" or "unicorn saddles".`
         },
         {
           role: "user",
