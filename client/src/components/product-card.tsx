@@ -76,9 +76,6 @@ export default function ProductCard({ product, index }: ProductCardProps) {
     <Card className="hover-lift bg-white rounded-2xl shadow-lg p-6 animate-slide-up flex flex-col h-full">
       <CardContent className="p-0 flex flex-col flex-grow">
         <div className="text-center mb-6">
-          <div className={`w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`}>
-            {product.name.charAt(0)}
-          </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
           <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
           {product.badge && (

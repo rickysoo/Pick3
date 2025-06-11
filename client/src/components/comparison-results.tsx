@@ -37,9 +37,9 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
             <p className="text-lg mb-6 opacity-90">Try another search with different criteria or explore more categories</p>
             <Button
               onClick={onNewSearch}
-              className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-xl hover:bg-gray-100 transition-colors transform hover:scale-105"
+              className="bg-white text-blue-600 font-bold py-4 px-12 rounded-xl hover:bg-gray-100 transition-all duration-200 transform hover:scale-110 shadow-2xl hover:shadow-3xl text-lg border-2 border-white"
             >
-              <RotateCcw className="mr-2 h-4 w-4" />
+              <RotateCcw className="mr-3 h-5 w-5" />
               Search Again
             </Button>
           </div>

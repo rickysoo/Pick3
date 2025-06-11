@@ -38,7 +38,7 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +49,6 @@ export default function Home() {
                 PickWise
               </h1>
             </div>
-
           </div>
         </div>
       </header>
