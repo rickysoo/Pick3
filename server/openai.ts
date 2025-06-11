@@ -17,7 +17,7 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
 
     const prompt = `You are a product comparison expert. Today's date is ${currentDate}. Based on the following search query, find and compare relevant products or services using the most current information available as of this date.
 
-CRITICAL: Only provide factual, verifiable information from current sources. Ensure all product names, services, and companies are up-to-date (e.g., use "Google Gemini" not "Google Bard", current company names, etc.). If you cannot find sufficient authentic current data, provide fewer results or indicate no results found. NEVER make up or estimate any information.
+IMPORTANT: Provide factual information about real products and services that exist. Use current product names and companies (e.g., "Google Gemini" not "Google Bard"). For popular product categories with many options, select 3 representative examples from different companies/brands. Only return "no results" if the search query is for something that genuinely doesn't exist or is extremely niche with no viable options.
 
 Search Query: ${searchData.searchQuery}
 
@@ -37,25 +37,23 @@ Please respond with a JSON object containing:
 3. "message": If no products found or fewer than expected, include an explanatory message
 
 IMPORTANT RULES:
-- If you cannot find any relevant products, return empty products array with message explaining no results found
-- If you can only find 1-2 products, return only those products with message explaining limited results
-- Never estimate or guess information
-- Use official sources only
-- If uncertain about any detail, mark as "No data available" or null
-- Pricing must be concise and from official sources (under 15 characters)
-- NEVER include ratings - always set rating to null as AI cannot verify authentic rating sources
-- Website URLs must be accurate and official
-- Only compare features that can be verified
-- Do not include logoUrl in responses
-- Feature names must be readable (e.g., "Free Trial" not "freeTrial", "Mobile Support" not "mobileSupport")
-- CRITICAL: Every product must have a unique descriptive badge (e.g., "Most Popular", "Most Affordable", "Best Value")`;
+- For common product categories (smartphones, laptops, headphones, etc.), provide 3 real products from different brands
+- Use well-known companies and their actual products (Samsung, Apple, Xiaomi, etc.)
+- Include realistic pricing ranges based on the search criteria
+- Always set rating to null
+- Use official website URLs from major manufacturers
+- Compare standard features relevant to the product category
+- Each product needs a unique badge (Most Popular, Best Value, Premium Choice, etc.)
+- Only return "no results" for truly impossible or non-existent product categories
+- Feature names should be readable (e.g., "Fast Charging" not "fastCharging")
+- Keep pricing under 15 characters and use currency specified in search`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: `You are an expert product comparison analyst with access to current information. Today's date is ${currentDate}. Provide only factual, verifiable information from current official sources. CRITICAL: Use up-to-date product names and company information (e.g., 'Google Gemini' not 'Google Bard', current pricing, active services). If you cannot find sufficient authentic current data for a search query, return fewer results or no results with an explanatory message. Never generate fictional products or companies. Never generate user ratings - always set rating to null since AI cannot access authentic review platforms. IMPORTANT: Every product must have a unique descriptive badge (e.g., 'Most Popular', 'Most Affordable', 'Best Value', 'Premium Choice'). Never estimate, approximate, or generate fictional data. If specific information is not available from reliable current sources, explicitly state 'No data available' or use null values.`
+          content: `You are an expert product comparison analyst. Today's date is ${currentDate}. Provide factual information about real products and services from reputable companies. Use current product names (e.g., 'Google Gemini' not 'Google Bard'). For popular product categories, find 3 representative options from different brands/companies. Only return no results for genuinely non-existent or extremely niche categories. Never generate fictional companies. Set rating to null always. Each product needs a unique badge (Most Popular, Most Affordable, Best Value, Premium Choice, etc.). Use real pricing from official sources when available, otherwise use "Contact for pricing" or "See website".`
         },
         {
           role: "user",
