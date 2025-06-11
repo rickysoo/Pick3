@@ -31,7 +31,7 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
         <ComparisonTable products={data.products} features={data.features} />
 
         {/* Call to Action */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-6">
           <div className="gradient-primary rounded-2xl p-8 text-white animate-fade-in">
             <h3 className="text-2xl font-bold mb-4">Need a different comparison?</h3>
             <p className="text-lg mb-6 opacity-90">Try another search with different criteria or explore more categories</p>
