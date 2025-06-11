@@ -48,7 +48,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   };
 
   return (
-    <Card className="hover-lift bg-white rounded-2xl shadow-lg p-6 animate-slide-up flex flex-col h-full">
+    <Card className="hover-lift bg-gradient-to-br from-white via-gray-50 to-purple-50 rounded-2xl shadow-lg p-6 animate-slide-up flex flex-col h-full border border-purple-100">
       <CardContent className="p-0 flex flex-col flex-grow">
         <div className="text-center mb-6">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
@@ -86,7 +86,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         <div className="mt-auto">
           <Button
             asChild
-            className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl`}
+            className={`w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl`}
           >
             <a 
               href={product.website} 
