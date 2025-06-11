@@ -41,12 +41,12 @@ export default function Home() {
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">
               <img 
-                src="/1749650698943.png" 
-                alt="PickWise Logo" 
-                className="w-10 h-10 shadow-lg rounded-lg"
+                src="/p3-logo.png" 
+                alt="Pick3 Logo" 
+                className="w-10 h-10"
               />
               <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                PickWise
+                Pick3
               </h1>
             </div>
           </div>
@@ -116,11 +116,11 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <img 
-              src="/1749650698943.png" 
-              alt="PickWise Logo" 
-              className="w-8 h-8 shadow-lg rounded-lg"
+              src="/p3-logo.png" 
+              alt="Pick3 Logo" 
+              className="w-8 h-8"
             />
-            <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">PickWise</h3>
+            <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Pick3</h3>
           </div>
           <p className="text-gray-400 mb-4">Smart picks. Quick decisions. Zero fluff.</p>
           <p className="text-gray-400 mb-4">

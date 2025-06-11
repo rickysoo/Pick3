@@ -14,7 +14,7 @@ interface SearchFormProps {
 }
 
 export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
-  const [placeholderText, setPlaceholderText] = useState("Describe what you're looking for...\n\nTips: Press Ctrl+Enter to start searching!");
+  const [placeholderText, setPlaceholderText] = useState("Describe what you're looking for...\nTips: Press Ctrl+Enter to start searching!");
   
   const form = useForm<InsertSearchRequest>({
     resolver: zodResolver(insertSearchRequestSchema),
@@ -31,7 +31,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
         const data = await response.json();
         if (data.examples) {
           const exampleText = data.examples.map((example: string) => `• ${example}`).join('\n');
-          setPlaceholderText(`Describe what you're looking for...\n\n${exampleText}\n\nTips: Press Ctrl+Enter to start searching!`);
+          setPlaceholderText(`Describe what you're looking for...\n${exampleText}\nTips: Press Ctrl+Enter to start searching!`);
         }
       } catch (error) {
         // Keep default placeholder if API fails
