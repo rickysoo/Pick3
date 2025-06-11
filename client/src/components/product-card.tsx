@@ -73,8 +73,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   };
 
   return (
-    <Card className="hover-lift bg-white rounded-2xl shadow-lg p-6 animate-slide-up">
-      <CardContent className="p-0">
+    <Card className="hover-lift bg-white rounded-2xl shadow-lg p-6 animate-slide-up flex flex-col h-full">
+      <CardContent className="p-0 flex flex-col flex-grow">
         <div className="text-center mb-6">
           <div className={`w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`}>
             {product.name.charAt(0)}
@@ -89,7 +89,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           )}
         </div>
         
-        <div className="space-y-3 mb-6">
+        <div className="space-y-3 mb-6 flex-grow">
           {/* Key Information - Always shown */}
           <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
             <span className="text-gray-700 font-medium">Pricing</span>
@@ -114,20 +114,22 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           ))}
         </div>
 
-        <Button
-          asChild
-          className={`w-full ${gradientClass} text-white font-semibold py-3 px-6 rounded-xl hover:opacity-90 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl`}
-        >
-          <a 
-            href={product.website} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center"
+        <div className="mt-auto">
+          <Button
+            asChild
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl`}
           >
-            <ExternalLink className="mr-2" size={16} />
-            Visit {product.name}
-          </a>
-        </Button>
+            <a 
+              href={product.website} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center"
+            >
+              <ExternalLink className="mr-2" size={16} />
+              Visit {product.name}
+            </a>
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

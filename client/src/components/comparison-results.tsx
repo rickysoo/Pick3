@@ -21,7 +21,7 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
         </div>
 
         {/* Product Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-8 mb-12 items-stretch">
           {data.products.map((product, index) => (
             <ProductCard key={index} product={product} index={index} />
           ))}
