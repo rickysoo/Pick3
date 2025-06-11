@@ -35,9 +35,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
               <FormItem>
                 <FormControl>
                   <Textarea
-                    placeholder="Describe what you're looking for... 
-
-Examples:
+                    placeholder="Describe what you're looking for...
 • Project management software for small teams in Canada, budget under $50/month
 • Video conferencing tools with screen sharing, works on mobile, GDPR compliant
 • CRM systems for real estate, integrates with email marketing, under $100/user
@@ -55,7 +53,7 @@ Examples:
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full gradient-primary text-white font-semibold py-4 px-8 rounded-xl hover:opacity-90 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             {isLoading ? (
               <>
