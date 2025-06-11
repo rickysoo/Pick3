@@ -17,7 +17,7 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
 
     const prompt = `You are a product comparison expert. Today's date is ${currentDate}. Based on the following search query, find and compare relevant products or services using the most current information available as of this date.
 
-IMPORTANT: Find real products from established brands that match the search criteria. Use actual product names from companies like Samsung, Apple, Xiaomi, Sony, etc. For price-based searches, recommend products that realistically fall within that price range. Return 3 products when possible, representing different value propositions (budget, mid-range, premium within the specified range). Only return "no results" for impossible or fictional product categories.
+IMPORTANT: Find real products and services from established companies that match the search criteria. For physical products use brands like Samsung, Apple, Xiaomi, Sony. For software/services include coding platforms like Replit, GitHub Codespaces, VS Code, Visual Studio, development tools, SaaS platforms, etc. Use actual product names and realistic pricing. Return 3 products when possible, representing different value propositions. Only return "no results" for impossible or fictional categories.
 
 Search Query: ${searchData.searchQuery}
 
@@ -53,7 +53,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: `You are a product comparison expert helping users find real products that exist in the market. For standard product categories (smartphones, laptops, headphones, appliances, etc.), always provide 3 actual products from established brands. Use real product names from companies like Samsung, Apple, Xiaomi, Sony, LG, Anker, etc. Include realistic pricing that matches typical market rates for the specified budget range. Set rating to null. Give each product a unique badge. For complex electronics (smartphones/laptops): include 10-15 key features covering specs, connectivity, and special features. For other products: include 6-10 relevant features. Only return empty results for truly impossible searches like "time travel machines" or "unicorn saddles".`
+          content: `You are a product comparison expert. Find real products and services from established companies that match the search. For physical products use brands like Samsung, Apple, Xiaomi, Sony. For software/services include platforms like Replit, GitHub Codespaces, VS Code, Visual Studio, IntelliJ, Figma, Notion, Slack, CodePen, Glitch, etc. Include coding platforms, IDEs, and development tools as valid product categories. Return 3 products when possible. Set rating to null. Include 8-12 key features. Only return empty results for impossible searches like "unicorn saddles" or "time travel machines".`
         },
         {
           role: "user",
@@ -61,7 +61,7 @@ IMPORTANT RULES:
         }
       ],
       response_format: { type: "json_object" },
-      max_tokens: 2000,
+      max_tokens: 1500,
     });
 
     const result = JSON.parse(response.choices[0].message.content || "{}");
