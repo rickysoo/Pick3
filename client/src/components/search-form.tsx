@@ -56,7 +56,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white via-purple-50 to-blue-50 rounded-2xl shadow-2xl p-8 mb-12 animate-slide-up hover-lift border border-purple-100">
+    <div className="bg-gradient-to-br from-white via-purple-50 to-blue-50 rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 mb-8 sm:mb-12 animate-slide-up hover-lift border border-purple-100">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
