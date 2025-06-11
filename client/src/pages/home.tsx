@@ -113,18 +113,18 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 mt-20">
+      <footer className="bg-gray-900 text-white py-6 sm:py-8 mt-12 sm:mt-20">
         <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center space-x-3 mb-4">
+          <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
             <img 
               src={p3Logo} 
               alt="Pick3 Logo" 
-              className="w-8 h-8"
+              className="w-6 h-6 sm:w-8 sm:h-8"
             />
-            <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text text-transparent">Pick3</h3>
+            <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text text-transparent">Pick3</h3>
           </div>
-          <p className="text-gray-400 mb-4">Your decisions made easy ⚡</p>
-          <p className="text-gray-400 mb-4">
+          <p className="text-sm sm:text-base text-gray-400 mb-3 sm:mb-4">Your decisions made easy ⚡</p>
+          <p className="text-sm sm:text-base text-gray-400 mb-3 sm:mb-4">
             Level up your AI game? <a 
               href="https://AICoach.my" 
               target="_blank" 

@@ -49,25 +49,25 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   };
 
   return (
-    <Card className="hover-lift bg-gradient-to-br from-white via-gray-50 to-purple-50 rounded-2xl shadow-lg p-6 animate-slide-up flex flex-col h-full border border-purple-100">
+    <Card className="hover-lift bg-gradient-to-br from-white via-gray-50 to-purple-50 rounded-2xl shadow-lg p-4 sm:p-6 animate-slide-up flex flex-col h-full border border-purple-100">
       <CardContent className="p-0 flex flex-col flex-grow">
-        <div className="text-center mb-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
-          <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
+        <div className="text-center mb-4 sm:mb-6">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
+          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 line-clamp-2">{product.description}</p>
           {product.badge && (
-            <Badge className={`${badgeColorClass} px-3 py-1 rounded-full text-sm font-semibold mb-4`}>
-              <Check className="mr-1" size={12} />
+            <Badge className={`${badgeColorClass} px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4`}>
+              <Check className="mr-1" size={10} />
               {product.badge}
             </Badge>
           )}
         </div>
         
-        <div className="space-y-3 mb-6 flex-grow">
+        <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 flex-grow">
           {/* Key Information - Always shown */}
-          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
-            <span className="text-gray-700 font-medium">Pricing</span>
+          <div className="flex items-center justify-between p-2 sm:p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
+            <span className="text-sm sm:text-base text-gray-700 font-medium">Pricing</span>
             {product.pricing ? (
-              <span className="font-bold text-gray-900">{product.pricing}</span>
+              <span className="font-bold text-sm sm:text-base text-gray-900">{product.pricing}</span>
             ) : (
               <span className="text-gray-400 text-xs">Not provided</span>
             )}
@@ -76,12 +76,12 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           
           {/* Top 2 Most Important Features */}
           {product.features && Object.entries(product.features).slice(0, 2).map(([feature, value]) => (
-            <div key={feature} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-600 capitalize">{feature}</span>
+            <div key={feature} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
+              <span className="text-xs sm:text-sm text-gray-600 capitalize">{feature}</span>
               <div className="flex items-center">
                 {getFeatureIcon(value)}
                 {typeof value === "string" && !["true", "false"].includes(value.toLowerCase()) && (
-                  <span className="ml-2 text-sm text-gray-700">{value}</span>
+                  <span className="ml-1 sm:ml-2 text-xs sm:text-sm text-gray-700">{value}</span>
                 )}
               </div>
             </div>
@@ -91,7 +91,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         <div className="mt-auto">
           <Button
             asChild
-            className={`w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl`}
+            className={`w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base`}
           >
             <a 
               href={product.website} 
@@ -100,8 +100,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               className="inline-flex items-center justify-center"
               onClick={() => trackEvent('product_click', 'outbound', product.name)}
             >
-              <ExternalLink className="mr-2" size={16} />
-              Visit {product.name}
+              <ExternalLink className="mr-1 sm:mr-2" size={14} />
+              <span className="hidden sm:inline">Visit {product.name}</span>
+              <span className="sm:hidden">Visit Site</span>
             </a>
           </Button>
         </div>
