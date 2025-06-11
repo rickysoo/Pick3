@@ -29,7 +29,7 @@ Please respond with a JSON object containing:
    - "rating": NEVER provide ratings - always set to null since you cannot verify authentic rating sources
    - "website": Official website URL only - must be accurate
    - "logoUrl": null (do not include logo URLs)
-   - "features": Object with 10-20 key features for complex products (smartphones, laptops) or 5-10 for simpler products - use clear, readable names (e.g., "Water Resistance" not "waterResistance") - include specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features
+   - "features": Object with 10-15 key features for complex products (smartphones, laptops) or 6-10 for simpler products - use clear, readable names (e.g., "Water Resistance" not "waterResistance") - include specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features
    - "badge": REQUIRED badge text for each product based on factual comparison (e.g., "Most Popular", "Most Affordable", "Best Value", "Premium Choice", "Editor's Pick") - ensure each product gets a unique descriptive badge
    - "badgeColor": Badge color (green, blue, orange, purple)
 
@@ -53,7 +53,7 @@ IMPORTANT RULES:
       messages: [
         {
           role: "system",
-          content: `You are a product comparison expert helping users find real products that exist in the market. For standard product categories (smartphones, laptops, headphones, appliances, etc.), always provide 3 actual products from established brands. Use real product names from companies like Samsung, Apple, Xiaomi, Sony, LG, Anker, etc. Include realistic pricing that matches typical market rates for the specified budget range. Set rating to null. Give each product a unique badge. For smartphones/tablets/laptops: include 15-20 features (display, processor, RAM, storage, camera specs, battery, connectivity, build quality, security features, software, special features). For simpler products: include 8-12 relevant features. Only return empty results for truly impossible searches like "time travel machines" or "unicorn saddles".`
+          content: `You are a product comparison expert helping users find real products that exist in the market. For standard product categories (smartphones, laptops, headphones, appliances, etc.), always provide 3 actual products from established brands. Use real product names from companies like Samsung, Apple, Xiaomi, Sony, LG, Anker, etc. Include realistic pricing that matches typical market rates for the specified budget range. Set rating to null. Give each product a unique badge. For complex electronics (smartphones/laptops): include 10-15 key features covering specs, connectivity, and special features. For other products: include 6-10 relevant features. Only return empty results for truly impossible searches like "time travel machines" or "unicorn saddles".`
         },
         {
           role: "user",
