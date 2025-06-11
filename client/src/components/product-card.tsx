@@ -26,7 +26,13 @@ export default function ProductCard({ product, index }: ProductCardProps) {
   const gradientClass = gradients[index] || "gradient-primary";
   const badgeColorClass = badgeColors[product.badgeColor as keyof typeof badgeColors] || "bg-blue-100 text-blue-800";
 
-  const renderStars = (rating: number) => {
+  const renderStars = (rating: number | null) => {
+    if (rating === null) {
+      return (
+        <span className="text-gray-500 text-sm">No rating data</span>
+      );
+    }
+
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
@@ -70,9 +76,29 @@ export default function ProductCard({ product, index }: ProductCardProps) {
     <Card className="hover-lift bg-white rounded-2xl shadow-lg p-6 animate-slide-up">
       <CardContent className="p-0">
         <div className="text-center mb-6">
-          <div className={`w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`}>
-            {product.name.charAt(0)}
-          </div>
+          {product.logoUrl ? (
+            <div className="w-16 h-16 bg-white border-2 border-gray-100 rounded-xl mx-auto mb-4 flex items-center justify-center overflow-hidden">
+              <img 
+                src={product.logoUrl} 
+                alt={`${product.name} logo`}
+                className="w-12 h-12 object-contain"
+                onError={(e) => {
+                  // Fallback to letter avatar if logo fails to load
+                  const target = e.target as HTMLElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent) {
+                    parent.className = `w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`;
+                    parent.textContent = product.name.charAt(0);
+                  }
+                }}
+              />
+            </div>
+          ) : (
+            <div className={`w-16 h-16 ${gradientClass} rounded-xl mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold`}>
+              {product.name.charAt(0)}
+            </div>
+          )}
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
           <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
           {product.badge && (

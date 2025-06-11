@@ -23,8 +23,9 @@ export interface ComparisonResult {
   name: string;
   description: string;
   pricing: string;
-  rating: number;
+  rating: number | null;
   website: string;
+  logoUrl?: string | null;
   features: Record<string, boolean | string>;
   badge?: string;
   badgeColor?: string;
