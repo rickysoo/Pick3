@@ -27,12 +27,12 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
   };
 
   const getFeatureValue = (product: ComparisonResult, feature: string) => {
-    return product.features[feature];
+    return product.features && product.features[feature];
   };
 
   // Separate key features from other features
   const keyFeatures = ["Pricing", "User Rating"];
-  const otherFeatures = features.filter(f => !keyFeatures.includes(f));
+  const otherFeatures = features ? features.filter(f => !keyFeatures.includes(f)) : [];
 
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-slide-up">
@@ -70,7 +70,11 @@ export default function ComparisonTable({ products, features }: ComparisonTableP
               <td className="px-6 py-4 text-sm font-medium text-gray-900 text-center">Pricing</td>
               {products.map((product) => (
                 <td key={`${product.name}-pricing`} className="px-6 py-4 text-center">
-                  <span className="font-semibold text-blue-600">{product.pricing}</span>
+                  {product.pricing ? (
+                    <span className="font-semibold text-blue-600">{product.pricing}</span>
+                  ) : (
+                    <span className="text-gray-400 text-xs">Not provided</span>
+                  )}
                 </td>
               ))}
             </tr>

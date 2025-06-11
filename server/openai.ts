@@ -62,22 +62,22 @@ IMPORTANT RULES:
       throw new Error("Invalid response format from OpenAI");
     }
 
-    // Ensure all products have required fields with accurate data handling
-    result.products = result.products.map((product: any, index: number) => ({
-      name: product.name || `Product ${index + 1}`,
-      description: product.description || "No data available",
-      pricing: product.pricing || "Contact sales",
+    // Pass through only what OpenAI provides - no synthetic fallbacks
+    result.products = result.products.map((product: any) => ({
+      name: product.name,
+      description: product.description,
+      pricing: product.pricing,
       rating: null, // Never show ratings as AI cannot verify authentic sources
-      website: product.website || "#",
-      logoUrl: product.logoUrl || null,
-      features: product.features || {},
+      website: product.website,
+      logoUrl: product.logoUrl,
+      features: product.features,
       badge: product.badge,
-      badgeColor: product.badgeColor || "blue"
+      badgeColor: product.badgeColor
     }));
 
     return {
       products: result.products,
-      features: result.features || Object.keys(result.products[0]?.features || {})
+      features: result.features
     };
 
   } catch (error) {
