@@ -6,7 +6,7 @@ import LoadingState from "@/components/loading-state";
 import ComparisonResults from "@/components/comparison-results";
 import { Scale, Award, Users, TrendingUp } from "lucide-react";
 import type { ComparisonResponse } from "@shared/schema";
-import p3Logo from "@assets/p3-logo_1749653153117.png";
+import p3Logo from "@assets/pick3-logo_1749654342574.png";
 
 export default function Home() {
   const [comparisonData, setComparisonData] = useState<ComparisonResponse | null>(null);
@@ -46,7 +46,7 @@ export default function Home() {
                 alt="Pick3 Logo" 
                 className="w-10 h-10"
               />
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-green-700 to-orange-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
                 Pick3
               </h1>
             </div>
@@ -121,7 +121,7 @@ export default function Home() {
               alt="Pick3 Logo" 
               className="w-8 h-8"
             />
-            <h3 className="text-xl font-bold bg-gradient-to-r from-green-400 to-orange-400 bg-clip-text text-transparent">Pick3</h3>
+            <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text text-transparent">Pick3</h3>
           </div>
           <p className="text-gray-400 mb-4">Smart picks. Quick decisions. Zero fluff.</p>
           <p className="text-gray-400 mb-4">
