@@ -8,14 +8,14 @@ export default function LoadingState() {
           <div className="animate-pulse-slow mb-6">
             <Brain className="text-blue-500 mx-auto" size={64} />
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">AI is searching for the best options...</h3>
-          <p className="text-gray-600 mb-8">Analyzing thousands of products to find your perfect matches</p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">AI hunting for gold...</h3>
+          <p className="text-gray-600 mb-8">Scanning the web for your top 3 picks</p>
           <div className="flex justify-center">
             <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
           </div>
           <div className="mt-8 max-w-md mx-auto">
             <div className="flex justify-between text-sm text-gray-500 mb-2">
-              <span>Searching products...</span>
+              <span>Finding winners...</span>
               <span>●●●</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">

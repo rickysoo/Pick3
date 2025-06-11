@@ -15,9 +15,9 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12 animate-fade-in">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Here are your <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">top matches</span>
+            Your <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">top 3 picks</span>
           </h2>
-          <p className="text-xl text-gray-600">AI-powered comparison based on your specific requirements</p>
+          <p className="text-xl text-gray-600">Handpicked by AI, tailored for you</p>
         </div>
 
         {/* Product Cards */}
@@ -33,8 +33,8 @@ export default function ComparisonResults({ data, onNewSearch }: ComparisonResul
         {/* Call to Action */}
         <div className="text-center mt-6">
           <div className="gradient-primary rounded-2xl p-8 text-white animate-fade-in">
-            <h3 className="text-2xl font-bold mb-4">Need a different comparison?</h3>
-            <p className="text-lg mb-6 opacity-90">Try another search with different criteria or explore more categories</p>
+            <h3 className="text-2xl font-bold mb-4">Want different options?</h3>
+            <p className="text-lg mb-6 opacity-90">Try a new search and discover more awesome picks</p>
             <Button
               onClick={() => {
                 onNewSearch();

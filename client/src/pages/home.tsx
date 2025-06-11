@@ -58,10 +58,10 @@ export default function Home() {
         <div className="container mx-auto max-w-4xl text-center">
           <div className="animate-fade-in">
             <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Find the <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Perfect Product</span>
+              Find Your <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Perfect Match</span>
             </h2>
             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-              Get AI-powered comparisons of products and services tailored to your specific needs, location, and requirements.
+              AI picks the best 3 options. No endless scrolling. Just smart choices.
             </p>
           </div>
 
@@ -87,17 +87,17 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-red-900 mb-2">Search Failed</h3>
+              <h3 className="text-xl font-semibold text-red-900 mb-2">Oops!</h3>
               <p className="text-red-700 mb-4">
                 {compareProductsMutation.error instanceof Error 
                   ? compareProductsMutation.error.message 
-                  : "Sorry, we couldn't process your search. Please try again."}
+                  : "Something went wrong. Let's try that again!"}
               </p>
               <button
                 onClick={() => compareProductsMutation.reset()}
                 className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
               >
-                Try Again
+                Retry
               </button>
             </div>
           </div>
@@ -122,9 +122,9 @@ export default function Home() {
             />
             <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">PickWise</h3>
           </div>
-          <p className="text-gray-400 mb-4">AI-powered product comparison platform helping you make wise picking decisions.</p>
+          <p className="text-gray-400 mb-4">Smart picks. Quick decisions. Zero fluff.</p>
           <p className="text-gray-400 mb-4">
-            Want to dive deeper into AI? <a 
+            Level up your AI game? <a 
               href="https://AICoach.my" 
               target="_blank" 
               rel="noopener noreferrer"
