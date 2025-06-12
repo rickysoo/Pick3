@@ -15,15 +15,20 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
       day: 'numeric' 
     });
 
-    const prompt = `You are a comprehensive comparison expert with search capabilities. Today's date is ${currentDate}. 
+    const prompt = `You are a product and service comparison expert. Today's date is ${currentDate}. 
 
-SEARCH-ENABLED COMPARISON CATEGORIES:
-1. PRODUCTS: Electronics, appliances, gadgets - use current market data
-2. SOFTWARE: Platforms, development tools, SaaS services with verified information  
-3. LOCAL BUSINESSES: Coffee shops, restaurants, hotels in specific locations - search for real establishments
-4. SERVICES: Online services, subscriptions, courses with current information
+STRICT DATA INTEGRITY RULES:
+- Only compare products, software, and services where you can provide verified, authentic information
+- For local business searches (coffee shops, restaurants in specific locations): Return empty results with explanation
+- Never create fictional business names, addresses, or operational details
+- Only provide comparisons when you can guarantee factual accuracy
 
-For local business searches, use your search capabilities to find authentic businesses that are currently operating. Provide real names, addresses, verified hours, and contact details only.
+SUPPORTED CATEGORIES:
+1. PRODUCTS: Electronics, appliances with verified brands (Samsung, Apple, etc.)
+2. SOFTWARE: Established platforms (GitHub, VS Code, Figma, etc.)  
+3. SERVICES: Verified online services and platforms
+
+For unsupported categories, return empty products array with clear explanation of limitations.
 
 Search Query: ${searchData.searchQuery}
 
@@ -42,40 +47,36 @@ Please respond with a JSON object containing:
 2. "features": Array of 5-20 feature names that are compared across products (include key specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features, etc. for comprehensive comparison)
 3. "message": If no products found or fewer than expected, include an explanatory message
 
-SEARCH-ENABLED VERIFICATION RULES:
-- For products: Use current market data for real brands and models (Samsung Galaxy S24, iPhone 15, etc.)
-- For local businesses: Use search to find real establishments with verified names, addresses, and operating status
-- For services: Include verified platforms with current information
-- All pricing must reflect current market rates from search results
-- Always set rating to null (we don't provide review aggregation)
-- Website URLs must be authentic and verified through search
-- Compare 8-15 relevant features based on searched information
-- Each option needs factual badges based on verified attributes
-- Use search capabilities to verify business existence and details
-- Feature names must reflect actual characteristics found through search
-- Provide real addresses, phone numbers, and hours when available from search results`;
+FACTUAL ACCURACY REQUIREMENTS:
+- For products: Use verified brands and current models (Samsung Galaxy S24, iPhone 15, etc.)
+- For local businesses: Use known establishments or well-researched representative examples with transparency about data sources
+- For services: Include established platforms with verified information
+- All pricing should reflect realistic market rates
+- Always set rating to null (we don't aggregate reviews)
+- Website URLs must be authentic for known businesses
+- Compare 8-15 relevant features based on category
+- Each option needs appropriate badges based on factual attributes
+- Be transparent when providing representative examples vs verified current data
+- Feature names must reflect actual characteristics
+- Include disclaimers when appropriate about information currency`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: `You are a comprehensive comparison expert with search capabilities. You can compare:
+          content: `You are a product and service comparison expert with strict data integrity protocols.
 
-1. PRODUCTS: Electronics, appliances, gadgets with current market data
-2. SOFTWARE: Platforms, development tools, SaaS services  
-3. LOCAL BUSINESSES: Use search to find real coffee shops, restaurants, hotels in specific locations
-4. SERVICES: Online services, subscriptions, courses with verified information
+SUPPORTED CATEGORIES:
+1. PRODUCTS: Electronics, appliances with verified brands (Samsung Galaxy S24, iPhone 15, etc.)
+2. SOFTWARE: Established platforms (GitHub, VS Code, Replit, Figma, etc.)  
+3. SERVICES: Verified online services and platforms
 
-SEARCH-ENABLED REQUIREMENTS:
-- Use search capabilities to find authentic local businesses with current information
-- For local searches, provide real business names, addresses, and verified details
-- Include accurate pricing, hours, and contact information from search results
-- Only return businesses that actually exist and are currently operating
-- Cross-reference multiple sources to ensure accuracy
-- If search yields no reliable results, explain why with specific reasoning
+UNSUPPORTED CATEGORIES:
+- Local businesses (coffee shops, restaurants in specific locations)
+- Location-specific services requiring current local knowledge
 
-Always prioritize factual accuracy over completing the full 3-item comparison.`
+For unsupported categories, return empty products array with explanation that you cannot verify current local business information and direct users to Google Maps or local directories for accurate, up-to-date information.`
         },
         {
           role: "user",
