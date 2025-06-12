@@ -237,7 +237,7 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
           messages: [
             {
               role: "system",
-              content: "Extract the business type and location from a local business search query. For business type, infer from context: 'hungry' = restaurant, 'coffee' = cafe, 'shopping' = store, etc. Use categories like 'restaurant', 'cafe', 'store', 'hotel'. For location, extract the city, area, or neighborhood. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}. If either cannot be determined, use null."
+              content: "Extract the precise business type and location from a local business search query. PRESERVE specific dietary/category requirements in the business type. Examples: 'vegetarian restaurants in KL' -> {\"businessType\": \"vegetarian restaurant\", \"location\": \"KL\"}, 'halal food downtown' -> {\"businessType\": \"halal restaurant\", \"location\": \"downtown\"}, 'vegan cafe in PJ' -> {\"businessType\": \"vegan cafe\", \"location\": \"PJ\"}, 'italian restaurant in Bangsar' -> {\"businessType\": \"italian restaurant\", \"location\": \"Bangsar\"}. For general queries: 'hungry' = restaurant, 'coffee' = cafe, 'shopping' = store. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}."
             },
             {
               role: "user",
@@ -252,6 +252,8 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
         const extraction = JSON.parse(extractionResponse.choices[0].message.content || '{}');
         const businessType = extraction.businessType;
         const location = extraction.location;
+        
+        console.log(`🔍 Extracted businessType: "${businessType}", location: "${location}"`);
         
         if (businessType && location) {
           console.log(`Searching for ${businessType} in ${location} using Google Places API`);

@@ -29,8 +29,22 @@ export async function searchLocalBusinesses(query: string, location: string): Pr
   }
 
   try {
-    // Text search for businesses
-    const searchQuery = `${query} in ${location}`;
+    // Enhanced search query for specific dietary requirements
+    let searchQuery = `${query} in ${location}`;
+    
+    // Add specific terms for better targeting of dietary requirements
+    if (query.toLowerCase().includes('vegetarian')) {
+      searchQuery = `vegetarian restaurants ${location}`;
+    } else if (query.toLowerCase().includes('vegan')) {
+      searchQuery = `vegan restaurants ${location}`;
+    } else if (query.toLowerCase().includes('halal')) {
+      searchQuery = `halal restaurants ${location}`;
+    } else if (query.toLowerCase().includes('kosher')) {
+      searchQuery = `kosher restaurants ${location}`;
+    } else {
+      searchQuery = `${query} in ${location}`;
+    }
+    
     const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(searchQuery)}&key=${apiKey}`;
     
     const response = await fetch(searchUrl);
