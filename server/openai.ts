@@ -104,6 +104,17 @@ This is a STRICT requirement - violating this protocol by creating fictional bus
       throw new Error("Invalid response format from OpenAI");
     }
 
+    // Check for location-specific business searches and block hallucinated results
+    const isLocationSearch = /\b(?:in|near|around|at)\s+[A-Z][a-z]+|coffee shop|restaurant|hotel|gym|salon|store|mall|cafe|bar|pub\s+.*\b(?:in|near|at)\s+/i.test(searchData.searchQuery);
+    
+    if (isLocationSearch) {
+      return {
+        products: [],
+        features: [],
+        message: "I cannot provide verified information about local businesses in specific locations. For accurate local business information, please check Google Maps, Yelp, or other local directory services that have current data about operating hours, locations, and contact details."
+      };
+    }
+
     // Handle case where no products found
     if (result.products.length === 0) {
       return {
