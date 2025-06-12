@@ -7,6 +7,31 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
+async function extractProductFromLocalQuery(query: string): Promise<string> {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: "Extract the product/service type from a location-based query and convert it to a general product search. For example: 'portrait photos in Balakong' -> 'portrait photography equipment', 'buying laptop in Ampang' -> 'laptops', 'coffee shops in KL' -> 'coffee making equipment'. Return only the product-focused search term."
+        },
+        {
+          role: "user",
+          content: `Convert this location-based query to a product search: "${query}"`
+        }
+      ],
+      max_tokens: 50,
+      temperature: 0
+    });
+
+    return response.choices[0].message.content?.trim() || query;
+  } catch (error) {
+    console.error('Error extracting product from query:', error);
+    return query;
+  }
+}
+
 async function compareWithSearchModel(searchData: InsertSearchRequest, currentDate: string): Promise<ComparisonResponse> {
   const prompt = `You are a product and service comparison expert. Today's date is ${currentDate}. 
 
@@ -14,6 +39,12 @@ STRICT DATA INTEGRITY RULES:
 - Only compare products, software, and services where you can provide verified, authentic information
 - Never create fictional business names, addresses, or operational details
 - Only provide comparisons when you can guarantee factual accuracy
+
+ENHANCED SEARCH CAPABILITY:
+- For broad terms like "Vibe coding platforms" -> interpret as "Visual coding platforms" or "Interactive coding environments"  
+- For service queries like "Auditing service" -> focus on "Auditing software" or "Business audit platforms"
+- For photography queries -> include "Photography equipment" or "Camera gear"
+- Always try to find at least 1-2 verified products even for niche queries
 
 SUPPORTED CATEGORIES:
 1. PRODUCTS: Electronics, appliances with verified brands (Samsung, Apple, etc.)
