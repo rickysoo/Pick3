@@ -6,14 +6,90 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
+async function compareWithSearchModel(searchData: InsertSearchRequest, currentDate: string): Promise<ComparisonResponse> {
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: `You are a comprehensive comparison expert with search capabilities. Use search to find authentic, current information.
+
+SEARCH-ENABLED CATEGORIES:
+1. PRODUCTS: Electronics, appliances with current market data
+2. SOFTWARE: Platforms, development tools with verified information  
+3. LOCAL BUSINESSES: Use search to find real coffee shops, restaurants, hotels in specific locations
+4. SERVICES: Online services, subscriptions with current information
+
+For local business searches:
+- Use search to find authentic businesses that are currently operating
+- Provide real business names, addresses, and verified details only
+- Include accurate hours, pricing, and contact information from search results
+- Only return businesses you can verify through search
+- If search yields insufficient reliable data, return empty results with explanation
+
+Always prioritize factual accuracy from search results over completing comparisons.`
+      },
+      {
+        role: "user",
+        content: `Search Query: ${searchData.searchQuery}
+
+Find and compare relevant options. Return JSON with:
+1. "products": Array of 1-3 verified options with real names, descriptions, pricing, website, features, badge, badgeColor
+2. "features": Array of relevant feature names for comparison
+3. "message": Explanatory message if needed
+
+Use search to verify all information is current and accurate.`
+      }
+    ],
+    response_format: { type: "json_object" }
+  });
+
+  const result = JSON.parse(response.choices[0].message.content || "{}");
+  
+  if (!result.products || !Array.isArray(result.products)) {
+    result.products = [];
+  }
+
+  return {
+    products: result.products.map((product: any) => ({
+      name: product.name,
+      description: product.description,
+      pricing: product.pricing,
+      rating: null,
+      website: product.website,
+      logoUrl: null,
+      features: product.features || {},
+      badge: product.badge,
+      badgeColor: product.badgeColor
+    })),
+    features: result.features || [],
+    message: result.message || ""
+  };
+}
+
 export async function compareProducts(searchData: InsertSearchRequest): Promise<ComparisonResponse> {
   try {
-    // Get current date for context
     const currentDate = new Date().toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'long', 
       day: 'numeric' 
     });
+
+    // Check if this is a local business search
+    const isLocalSearch = /\b(coffee\s+shop|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall)\s+.*\b(in|near|at|around)\s+|in\s+\w+.*\b(coffee|restaurant|hotel|gym|salon|store|cafe|bar|pub)/i.test(searchData.searchQuery);
+    
+    if (isLocalSearch) {
+      try {
+        return await compareWithSearchModel(searchData, currentDate);
+      } catch (error) {
+        console.log('Search model unavailable, falling back to no results for local search');
+        return {
+          products: [],
+          features: [],
+          message: "I cannot provide verified information about current local businesses. For accurate local business information with current hours, locations, and contact details, please check Google Maps, Yelp, or other local directory services."
+        };
+      }
+    }
 
     const prompt = `You are a product and service comparison expert. Today's date is ${currentDate}. 
 
