@@ -84,8 +84,17 @@ For local business searches (like "coffee shops in [city]"), provide 3 real or r
 
     const result = JSON.parse(response.choices[0].message.content || "{}");
     
-    // Validate basic structure
-    if (!result.products || !Array.isArray(result.products)) {
+    // Validate basic structure - handle both empty results and malformed responses
+    if (!result || typeof result !== 'object') {
+      throw new Error("Invalid response format from OpenAI");
+    }
+    
+    // Initialize products array if missing
+    if (!result.products) {
+      result.products = [];
+    }
+    
+    if (!Array.isArray(result.products)) {
       throw new Error("Invalid response format from OpenAI");
     }
 
