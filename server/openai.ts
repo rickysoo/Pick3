@@ -72,13 +72,15 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
     });
 
     // Check if this is a local business search
-    const isLocalSearch = /\b(coffee\s+shop|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall)\s+.*\b(in|near|at|around)\s+|in\s+\w+.*\b(coffee|restaurant|hotel|gym|salon|store|cafe|bar|pub)/i.test(searchData.searchQuery);
+    const isLocalSearch = /(coffee|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall).*(in|near|at|around)/i.test(searchData.searchQuery);
+    
+    console.log(`Query: "${searchData.searchQuery}", isLocalSearch: ${isLocalSearch}`);
     
     if (isLocalSearch) {
       try {
         // Extract business type and location from search query
-        const businessTypeMatch = searchData.searchQuery.match(/\b(coffee\s+shop|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall|coffee|restaurant)/i);
-        const locationMatch = searchData.searchQuery.match(/\b(?:in|near|at|around)\s+([A-Za-z\s]+)/i);
+        const businessTypeMatch = searchData.searchQuery.match(/(coffee\s*shops?|restaurants?|hotels?|gyms?|salons?|stores?|cafes?|bars?|pubs?|malls?|coffee)/i);
+        const locationMatch = searchData.searchQuery.match(/(?:in|near|at|around)\s+([A-Za-z\s]+)/i);
         
         if (businessTypeMatch && locationMatch) {
           const businessType = businessTypeMatch[1];
