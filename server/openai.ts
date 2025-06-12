@@ -333,7 +333,7 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
       messages: [
         {
           role: "system",
-          content: "Generate 3 diverse search examples for a universal comparison app that handles products, services, local businesses, and brands. Mix categories: electronics, software, professional services, restaurants, retail stores, healthcare, automotive, etc. Include location-based searches. Keep examples realistic and inspiring. Respond with JSON object containing 'examples' array."
+          content: "Generate 3 diverse, short search examples for a universal comparison app. Mix: products, services, local businesses. Examples: 'Gaming laptops under $1000', 'Dentists in Bangsar', 'Video editing software'. Keep under 8 words each. Return JSON: {\"examples\": [\"example1\", \"example2\", \"example3\"]}"
         },
         {
           role: "user",
@@ -341,15 +341,26 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
         }
       ],
       response_format: { type: "json_object" },
-      max_tokens: 200
+      max_tokens: 150,
+      temperature: 0.7
     });
 
-    const result = JSON.parse(response.choices[0].message.content || '{}');
-    return result.examples || [
-      "Law firms in Kuala Lumpur",
-      "Gaming laptops under $1200",
-      "Vegetarian restaurants in Bangsar"
-    ];
+    const content = response.choices[0].message.content || '{}';
+    try {
+      const result = JSON.parse(content);
+      return result.examples || [
+        "Law firms in Kuala Lumpur",
+        "Gaming laptops under $1200", 
+        "Vegetarian restaurants in Bangsar"
+      ];
+    } catch (parseError) {
+      console.error('JSON parsing error:', parseError, 'Content:', content);
+      return [
+        "Auto repair shops in Subang Jaya",
+        "Note-taking apps for students",
+        "Italian restaurants downtown KL"
+      ];
+    }
   } catch (error) {
     console.error('Error generating examples:', error);
     return [
