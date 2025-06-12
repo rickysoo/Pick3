@@ -43,8 +43,9 @@ STRICT DATA INTEGRITY RULES:
 ENHANCED SEARCH CAPABILITY:
 - For broad terms like "Vibe coding platforms" -> interpret as "Visual coding platforms" or "Interactive coding environments"  
 - For service queries like "Auditing service" -> focus on "Auditing software" or "Business audit platforms"
-- For photography queries -> include "Photography equipment" or "Camera gear"
-- Always try to find at least 1-2 verified products even for niche queries
+- For photography queries like "portrait photos" -> provide "Portrait photography cameras" or "Camera equipment for portraits"
+- For creative queries -> focus on related tools and software
+- Always try to find at least 1-2 verified products even for niche queries by expanding the interpretation
 
 SUPPORTED CATEGORIES:
 1. PRODUCTS: Electronics, appliances with verified brands (Samsung, Apple, etc.)
@@ -97,6 +98,48 @@ Please respond with a JSON object containing:
     
     if (!result.features || !Array.isArray(result.features)) {
       result.features = [];
+    }
+
+    // If no products found, try a more flexible interpretation
+    if (result.products.length === 0) {
+      console.log('🔄 No products found, attempting flexible interpretation...');
+      
+      const flexiblePrompt = `The user searched for: "${searchData.searchQuery}"
+
+Since no direct products were found, provide helpful alternatives by interpreting the query more broadly:
+
+- Photography/creative queries → Camera equipment, editing software, design tools
+- Business/service queries → Software platforms, SaaS solutions  
+- Development/coding queries → IDEs, frameworks, development platforms
+- General concepts → Related verified products or software
+
+Provide 1-3 authentic, verifiable products that could genuinely help with the user's underlying need.
+
+JSON format with: products (name, description, pricing, rating: null, website, logoUrl: null, features, badge, badgeColor), features, message.`;
+
+      try {
+        const flexibleResponse = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages: [
+            { role: "system", content: "Provide authentic product suggestions that genuinely relate to user needs." },
+            { role: "user", content: flexiblePrompt }
+          ],
+          response_format: { type: "json_object" },
+          temperature: 0.4
+        });
+
+        const flexibleResult = JSON.parse(flexibleResponse.choices[0].message.content || "{}");
+        
+        if (flexibleResult.products && flexibleResult.products.length > 0) {
+          return {
+            products: flexibleResult.products,
+            features: flexibleResult.features || [],
+            message: flexibleResult.message || "Here are related products that might help with your needs."
+          };
+        }
+      } catch (flexibleError) {
+        console.error('Flexible interpretation error:', flexibleError);
+      }
     }
 
     return {
