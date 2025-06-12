@@ -29,21 +29,8 @@ export async function searchLocalBusinesses(query: string, location: string): Pr
   }
 
   try {
-    // Enhanced search query for specific dietary requirements
-    let searchQuery = `${query} in ${location}`;
-    
-    // Add specific terms for better targeting of dietary requirements
-    if (query.toLowerCase().includes('vegetarian')) {
-      searchQuery = `vegetarian restaurants ${location}`;
-    } else if (query.toLowerCase().includes('vegan')) {
-      searchQuery = `vegan restaurants ${location}`;
-    } else if (query.toLowerCase().includes('halal')) {
-      searchQuery = `halal restaurants ${location}`;
-    } else if (query.toLowerCase().includes('kosher')) {
-      searchQuery = `kosher restaurants ${location}`;
-    } else {
-      searchQuery = `${query} in ${location}`;
-    }
+    // Universal search query construction - no industry restrictions
+    const searchQuery = `${query} in ${location}`;
     
     const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(searchQuery)}&key=${apiKey}`;
     
@@ -110,8 +97,6 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
 
   // Determine business type and features
   const isRestaurant = place.types.includes('restaurant') || place.types.includes('food');
-  const isCoffeeShop = place.types.includes('cafe') || place.name.toLowerCase().includes('coffee') || place.name.toLowerCase().includes('cafe');
-  
   const features: Record<string, boolean | string> = {
     "Address": place.formatted_address || "Address not available",
     "Price Range": pricingMap[priceLevel as keyof typeof pricingMap] || "$$",
@@ -120,12 +105,20 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
     "Business Status": place.business_status === 'OPERATIONAL' ? "Open" : "Status unknown"
   };
 
-  if (isCoffeeShop) {
+  // Universal feature detection - no industry restrictions
+  if (place.types.includes('cafe') || place.name.toLowerCase().includes('coffee') || place.name.toLowerCase().includes('cafe')) {
     features["Specialties"] = "Coffee & beverages";
     features["Atmosphere"] = "Cafe environment";
-  } else if (isRestaurant) {
+  } else if (isRestaurant || place.types.includes('restaurant') || place.types.includes('food')) {
     features["Cuisine"] = "Various dishes";
     features["Dining Experience"] = "Restaurant experience";
+  } else if (place.types.includes('store') || place.types.includes('shopping')) {
+    features["Services"] = "Retail services";
+    features["Specialties"] = "Various products";
+  } else {
+    // Universal fallback for any business type
+    features["Services"] = "Professional services";
+    features["Specialties"] = "Business services";
   }
 
   if (place.opening_hours?.weekday_text) {
@@ -164,13 +157,21 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
 }
 
 export function getLocalBusinessFeatures(businessType: string): string[] {
-  const commonFeatures = ["Address", "Price Range", "Currently Open", "Phone Number", "Business Status"];
+  // Universal features for all business types - no industry restrictions
+  const baseFeatures = ["Address", "Price Range", "Currently Open", "Phone Number", "Business Status", "Operating Hours"];
   
-  if (businessType.includes('coffee') || businessType.includes('cafe')) {
-    return [...commonFeatures, "Specialties", "Atmosphere", "Operating Hours"];
-  } else if (businessType.includes('restaurant')) {
-    return [...commonFeatures, "Cuisine", "Dining Experience", "Operating Hours"];
+  // Add contextual features based on business type universally
+  const type = businessType.toLowerCase();
+  if (type.includes('coffee') || type.includes('cafe')) {
+    return [...baseFeatures, "Specialties", "Atmosphere"];
+  } else if (type.includes('restaurant') || type.includes('food')) {
+    return [...baseFeatures, "Cuisine", "Dining Experience"];
+  } else if (type.includes('hotel') || type.includes('accommodation')) {
+    return [...baseFeatures, "Amenities", "Room Types"];
+  } else if (type.includes('store') || type.includes('shop') || type.includes('retail')) {
+    return [...baseFeatures, "Services", "Specialties"];
   } else {
-    return [...commonFeatures, "Operating Hours", "Services"];
+    // Universal fallback for any business category
+    return [...baseFeatures, "Services", "Specialties"];
   }
 }

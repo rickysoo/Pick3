@@ -36,21 +36,20 @@ async function compareWithSearchModel(searchData: InsertSearchRequest, currentDa
   const prompt = `You are a product and service comparison expert. Today's date is ${currentDate}. 
 
 STRICT DATA INTEGRITY RULES:
-- Only compare products, software, and services where you can provide verified, authentic information
+- Only provide verified, authentic information from real sources
 - Never create fictional business names, addresses, or operational details
-- Only provide comparisons when you can guarantee factual accuracy
+- All comparisons must be based on factual, verifiable data
 
-ENHANCED SEARCH CAPABILITY:
-- For broad terms like "Vibe coding platforms" -> interpret as "Visual coding platforms" or "Interactive coding environments"  
-- For service queries like "Auditing service" -> focus on "Auditing software" or "Business audit platforms"
-- For photography queries like "portrait photos" -> provide "Portrait photography cameras" or "Camera equipment for portraits"
-- For creative queries -> focus on related tools and software
-- Always try to find at least 1-2 verified products even for niche queries by expanding the interpretation
+UNIVERSAL SEARCH CAPABILITY:
+- Support ALL types of searches: brands, products, services, places
+- No industry restrictions - handle any legitimate business category
+- Interpret user intent broadly while maintaining authenticity
+- Provide comparisons for any verifiable entities across all industries
 
-SUPPORTED CATEGORIES:
-1. PRODUCTS: Electronics, appliances with verified brands (Samsung, Apple, etc.)
-2. SOFTWARE: Established platforms (GitHub, VS Code, Figma, etc.)  
-3. SERVICES: Verified online services and platforms
+APPROACH:
+- For ANY product/service/brand: Find authentic, established options
+- For ANY location-based query: Use real business data
+- Always prioritize factual accuracy over category limitations
 
 Search Query: ${searchData.searchQuery}
 
@@ -237,7 +236,7 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
           messages: [
             {
               role: "system",
-              content: "Extract the precise business type and location from a local business search query. PRESERVE specific dietary/category requirements in the business type. Examples: 'vegetarian restaurants in KL' -> {\"businessType\": \"vegetarian restaurant\", \"location\": \"KL\"}, 'halal food downtown' -> {\"businessType\": \"halal restaurant\", \"location\": \"downtown\"}, 'vegan cafe in PJ' -> {\"businessType\": \"vegan cafe\", \"location\": \"PJ\"}, 'italian restaurant in Bangsar' -> {\"businessType\": \"italian restaurant\", \"location\": \"Bangsar\"}. For general queries: 'hungry' = restaurant, 'coffee' = cafe, 'shopping' = store. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}."
+              content: "Extract business type and location from any search query without industry restrictions. Preserve all specific requirements, categories, or modifiers. Examples: 'law firms in KL' -> {\"businessType\": \"law firm\", \"location\": \"KL\"}, 'yoga studios downtown' -> {\"businessType\": \"yoga studio\", \"location\": \"downtown\"}, 'car dealerships in PJ' -> {\"businessType\": \"car dealership\", \"location\": \"PJ\"}, 'plumbers near me' -> {\"businessType\": \"plumber\", \"location\": \"near me\"}. Handle ANY business category universally. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}."
             },
             {
               role: "user",
