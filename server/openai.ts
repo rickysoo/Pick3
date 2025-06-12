@@ -333,11 +333,11 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
       messages: [
         {
           role: "system",
-          content: "Generate 3 diverse search examples for a product comparison app. Include mix of products (electronics, software, services) and some local business searches. Keep examples short, realistic, and varied. Respond with JSON array of strings."
+          content: "Generate 3 diverse search examples for a universal comparison app that handles products, services, local businesses, and brands. Mix categories: electronics, software, professional services, restaurants, retail stores, healthcare, automotive, etc. Include location-based searches. Keep examples realistic and inspiring. Respond with JSON object containing 'examples' array."
         },
         {
           role: "user",
-          content: "Generate 3 example search queries"
+          content: "Generate 3 varied search examples showing the app's universal capabilities"
         }
       ],
       response_format: { type: "json_object" },
@@ -346,16 +346,16 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
 
     const result = JSON.parse(response.choices[0].message.content || '{}');
     return result.examples || [
-      "Wireless headphones under $100",
-      "Project management tools for teams",
-      "Coffee shops in downtown"
+      "Law firms in Kuala Lumpur",
+      "Gaming laptops under $1200",
+      "Vegetarian restaurants in Bangsar"
     ];
   } catch (error) {
     console.error('Error generating examples:', error);
     return [
-      "Best smartphones under $500",
-      "Video editing software comparison", 
-      "Restaurants near KLCC"
+      "Car insurance companies",
+      "Yoga studios in Petaling Jaya", 
+      "Project management software"
     ];
   }
 }
