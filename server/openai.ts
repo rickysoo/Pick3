@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import type { InsertSearchRequest, ComparisonResult, ComparisonResponse } from "@shared/schema";
+import { searchLocalBusinesses, getLocalBusinessFeatures } from "./google-places";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ 
@@ -7,64 +8,59 @@ const openai = new OpenAI({
 });
 
 async function compareWithSearchModel(searchData: InsertSearchRequest, currentDate: string): Promise<ComparisonResponse> {
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      {
-        role: "system",
-        content: `You are a comprehensive comparison expert with search capabilities. Use search to find authentic, current information.
+  // First try the search-enabled model
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini-search-preview",
+      messages: [
+        {
+          role: "system",
+          content: `You have access to web search capabilities. Use them to find current, factual information about local businesses.
 
-SEARCH-ENABLED CATEGORIES:
-1. PRODUCTS: Electronics, appliances with current market data
-2. SOFTWARE: Platforms, development tools with verified information  
-3. LOCAL BUSINESSES: Use search to find real coffee shops, restaurants, hotels in specific locations
-4. SERVICES: Online services, subscriptions with current information
+For local business searches (coffee shops, restaurants, etc.):
+- Search for real businesses that are currently operating in the specified location
+- Verify business names, addresses, hours, and contact information through search
+- Only return businesses you can confirm exist and are operational
+- Include authentic details from official websites or verified listings
+- If search doesn't yield reliable data, return empty results with explanation
 
-For local business searches:
-- Use search to find authentic businesses that are currently operating
-- Provide real business names, addresses, and verified details only
-- Include accurate hours, pricing, and contact information from search results
-- Only return businesses you can verify through search
-- If search yields insufficient reliable data, return empty results with explanation
+Prioritize search-verified accuracy over completing full comparisons.`
+        },
+        {
+          role: "user",
+          content: `Search for and compare: ${searchData.searchQuery}
 
-Always prioritize factual accuracy from search results over completing comparisons.`
-      },
-      {
-        role: "user",
-        content: `Search Query: ${searchData.searchQuery}
+Use your search capabilities to find authentic businesses. Return JSON with verified information only.`
+        }
+      ],
+      response_format: { type: "json_object" }
+    });
 
-Find and compare relevant options. Return JSON with:
-1. "products": Array of 1-3 verified options with real names, descriptions, pricing, website, features, badge, badgeColor
-2. "features": Array of relevant feature names for comparison
-3. "message": Explanatory message if needed
+    const result = JSON.parse(response.choices[0].message.content || "{}");
+    
+    if (!result.products || !Array.isArray(result.products)) {
+      result.products = [];
+    }
 
-Use search to verify all information is current and accurate.`
-      }
-    ],
-    response_format: { type: "json_object" }
-  });
-
-  const result = JSON.parse(response.choices[0].message.content || "{}");
-  
-  if (!result.products || !Array.isArray(result.products)) {
-    result.products = [];
+    return {
+      products: result.products.map((product: any) => ({
+        name: product.name,
+        description: product.description,
+        pricing: product.pricing,
+        rating: null,
+        website: product.website,
+        logoUrl: null,
+        features: product.features || {},
+        badge: product.badge,
+        badgeColor: product.badgeColor
+      })),
+      features: result.features || [],
+      message: result.message || ""
+    };
+  } catch (error) {
+    // If search model fails, throw to trigger fallback
+    throw new Error(`Search model unavailable: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
-
-  return {
-    products: result.products.map((product: any) => ({
-      name: product.name,
-      description: product.description,
-      pricing: product.pricing,
-      rating: null,
-      website: product.website,
-      logoUrl: null,
-      features: product.features || {},
-      badge: product.badge,
-      badgeColor: product.badgeColor
-    })),
-    features: result.features || [],
-    message: result.message || ""
-  };
 }
 
 export async function compareProducts(searchData: InsertSearchRequest): Promise<ComparisonResponse> {
@@ -80,13 +76,38 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
     
     if (isLocalSearch) {
       try {
-        return await compareWithSearchModel(searchData, currentDate);
-      } catch (error) {
-        console.log('Search model unavailable, falling back to no results for local search');
+        // Extract business type and location from search query
+        const businessTypeMatch = searchData.searchQuery.match(/\b(coffee\s+shop|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall|coffee|restaurant)/i);
+        const locationMatch = searchData.searchQuery.match(/\b(?:in|near|at|around)\s+([A-Za-z\s]+)/i);
+        
+        if (businessTypeMatch && locationMatch) {
+          const businessType = businessTypeMatch[1];
+          const location = locationMatch[1].trim();
+          
+          console.log(`Searching for ${businessType} in ${location} using Google Places API`);
+          const businesses = await searchLocalBusinesses(businessType, location);
+          
+          if (businesses.length > 0) {
+            const features = getLocalBusinessFeatures(businessType);
+            return {
+              products: businesses,
+              features,
+              message: `Found ${businesses.length} verified ${businessType} location${businesses.length > 1 ? 's' : ''} in ${location} using real-time data from Google Places.`
+            };
+          }
+        }
+        
         return {
           products: [],
           features: [],
-          message: "I cannot provide verified information about current local businesses. For accurate local business information with current hours, locations, and contact details, please check Google Maps, Yelp, or other local directory services."
+          message: "No verified local businesses found for this search. Please check the location name or try a different search term."
+        };
+      } catch (error) {
+        console.log('Google Places API error:', error);
+        return {
+          products: [],
+          features: [],
+          message: "Unable to search local businesses at this time. Please try again later or check Google Maps directly for local business information."
         };
       }
     }
