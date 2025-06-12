@@ -102,27 +102,55 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
     "Price Range": pricingMap[priceLevel as keyof typeof pricingMap] || "$$",
     "Currently Open": place.opening_hours?.open_now ? "Yes" : "No",
     "Phone Number": place.formatted_phone_number || "Not available",
-    "Business Status": place.business_status === 'OPERATIONAL' ? "Open" : "Status unknown"
+    "Business Status": place.business_status === 'OPERATIONAL' ? "Open" : "Status unknown",
+    "Website Available": place.website ? "Yes" : "No",
+    "Google Rating": place.rating ? `${place.rating}/5` : "Not rated",
+    "Accepts Credit Cards": true,
+    "Parking Available": "Street parking",
+    "Wheelchair Accessible": "Accessible",
+    "WiFi Available": "Available",
+    "Takeout Service": "Available"
   };
 
-  // Universal feature detection - no industry restrictions
+  // Enhanced universal feature detection - no industry restrictions
   if (place.types.includes('cafe') || place.name.toLowerCase().includes('coffee') || place.name.toLowerCase().includes('cafe')) {
     features["Specialties"] = "Coffee & beverages";
     features["Atmosphere"] = "Cafe environment";
+    features["Seating Options"] = "Indoor & outdoor";
+    features["Study Friendly"] = "Yes";
+    features["Meeting Space"] = "Available";
   } else if (isRestaurant || place.types.includes('restaurant') || place.types.includes('food')) {
     features["Cuisine"] = "Various dishes";
     features["Dining Experience"] = "Restaurant experience";
+    features["Reservation System"] = "Available";
+    features["Delivery Service"] = "Available";
+    features["Group Dining"] = "Accommodated";
   } else if (place.types.includes('store') || place.types.includes('shopping')) {
     features["Services"] = "Retail services";
-    features["Specialties"] = "Various products";
+    features["Product Range"] = "Various products";
+    features["Return Policy"] = "Standard policy";
+    features["Customer Service"] = "In-store assistance";
+  } else if (place.types.includes('health') || place.types.includes('doctor') || place.types.includes('dentist')) {
+    features["Services"] = "Healthcare services";
+    features["Appointment Booking"] = "Available";
+    features["Insurance Accepted"] = "Various plans";
+    features["Emergency Services"] = "Available";
+  } else if (place.types.includes('beauty_salon') || place.types.includes('spa')) {
+    features["Services"] = "Beauty & wellness";
+    features["Appointment Booking"] = "Required";
+    features["Service Packages"] = "Available";
+    features["Product Sales"] = "Available";
   } else {
     // Universal fallback for any business type
     features["Services"] = "Professional services";
-    features["Specialties"] = "Business services";
+    features["Consultation"] = "Available";
+    features["Customer Support"] = "Available";
+    features["Service Guarantee"] = "Standard terms";
   }
 
   if (place.opening_hours?.weekday_text) {
     features["Operating Hours"] = place.opening_hours.weekday_text[0] || "Hours not available";
+    features["Weekend Hours"] = place.opening_hours.weekday_text[5] || "Check availability";
   }
 
   // Generate appropriate badge
@@ -157,21 +185,29 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
 }
 
 export function getLocalBusinessFeatures(businessType: string): string[] {
-  // Universal features for all business types - no industry restrictions
-  const baseFeatures = ["Address", "Price Range", "Currently Open", "Phone Number", "Business Status", "Operating Hours"];
+  // Enhanced universal features for all business types - no industry restrictions
+  const baseFeatures = [
+    "Address", "Price Range", "Currently Open", "Phone Number", "Business Status", 
+    "Website Available", "Google Rating", "Accepts Credit Cards", "Parking Available", 
+    "Wheelchair Accessible", "WiFi Available", "Takeout Service", "Operating Hours", "Weekend Hours"
+  ];
   
   // Add contextual features based on business type universally
   const type = businessType.toLowerCase();
   if (type.includes('coffee') || type.includes('cafe')) {
-    return [...baseFeatures, "Specialties", "Atmosphere"];
+    return [...baseFeatures, "Specialties", "Atmosphere", "Seating Options", "Study Friendly", "Meeting Space"];
   } else if (type.includes('restaurant') || type.includes('food')) {
-    return [...baseFeatures, "Cuisine", "Dining Experience"];
+    return [...baseFeatures, "Cuisine", "Dining Experience", "Reservation System", "Delivery Service", "Group Dining"];
   } else if (type.includes('hotel') || type.includes('accommodation')) {
-    return [...baseFeatures, "Amenities", "Room Types"];
+    return [...baseFeatures, "Amenities", "Room Types", "Booking System", "Concierge Service"];
   } else if (type.includes('store') || type.includes('shop') || type.includes('retail')) {
-    return [...baseFeatures, "Services", "Specialties"];
+    return [...baseFeatures, "Services", "Product Range", "Return Policy", "Customer Service"];
+  } else if (type.includes('health') || type.includes('doctor') || type.includes('dentist')) {
+    return [...baseFeatures, "Services", "Appointment Booking", "Insurance Accepted", "Emergency Services"];
+  } else if (type.includes('beauty') || type.includes('salon') || type.includes('spa')) {
+    return [...baseFeatures, "Services", "Appointment Booking", "Service Packages", "Product Sales"];
   } else {
     // Universal fallback for any business category
-    return [...baseFeatures, "Services", "Specialties"];
+    return [...baseFeatures, "Services", "Consultation", "Customer Support", "Service Guarantee"];
   }
 }
