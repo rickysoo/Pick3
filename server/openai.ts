@@ -79,11 +79,11 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
       messages: [
         {
           role: "system",
-          content: "You are a search query classifier. Determine if a search query is looking for local businesses/services in a specific location. Respond with only 'true' or 'false'."
+          content: "Classify if a search query is looking for physical businesses or places in a specific geographic location. Answer 'true' if the query mentions both: 1) A type of business/place/service AND 2) A specific location (city, area, neighborhood). Examples: 'coffee shops in KL' (true), 'tea time place in Bukit Bintang' (true), 'best laptops' (false), 'restaurants' (false - no location). Respond only 'true' or 'false'."
         },
         {
           role: "user",
-          content: `Is this query looking for local businesses or services in a specific location? Query: "${searchData.searchQuery}"`
+          content: `Query: "${searchData.searchQuery}"`
         }
       ],
       max_tokens: 10,
@@ -92,7 +92,7 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
 
     const isLocalSearch = isLocalSearchResponse.choices[0].message.content?.trim().toLowerCase() === 'true';
     
-    console.log(`🔍 Query: "${searchData.searchQuery}", isLocalSearch: ${isLocalSearch}`);
+    console.log(`🔍 Query: "${searchData.searchQuery}", LLM response: "${isLocalSearchResponse.choices[0].message.content}", isLocalSearch: ${isLocalSearch}`);
     
     if (isLocalSearch) {
       console.log(`🏪 Processing local business search...`);
@@ -103,11 +103,11 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
           messages: [
             {
               role: "system",
-              content: "Extract the business type and location from a local business search query. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}. If either cannot be determined, use null."
+              content: "Extract the business type and location from a local business search query. For business type, use specific categories like 'restaurant', 'cafe', 'tea house', 'bar', 'hotel', etc. For location, extract the city, area, or neighborhood name. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}. If either cannot be determined, use null."
             },
             {
               role: "user",
-              content: `Extract business type and location from: "${searchData.searchQuery}"`
+              content: `Extract business type and location from this query: "${searchData.searchQuery}"`
             }
           ],
           response_format: { type: "json_object" },
