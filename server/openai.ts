@@ -59,7 +59,7 @@ Please respond with a JSON object containing:
    - "description": Brief factual description (max 100 chars)
    - "pricing": Short, concise pricing (e.g., "From $10/month", "Free", "$99") - keep under 15 characters
    - "rating": Always set to null
-   - "website": Official website URL only
+   - "website": Valid, working official website URL (verify URL format and avoid broken links)
    - "logoUrl": null
    - "features": Object with 8-15 detailed, specific features based on category (avoid generic terms)
    - "badge": Descriptive badge text (e.g., "Most Popular", "Best Value", "Premium Choice")

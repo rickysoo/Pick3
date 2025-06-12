@@ -176,7 +176,7 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
     description: `Located at ${place.formatted_address}`,
     pricing: pricingMap[priceLevel as keyof typeof pricingMap] || "$$",
     rating: null, // We don't display ratings to maintain consistency
-    website: place.website || `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
+    website: `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
     logoUrl: null,
     features,
     badge,
