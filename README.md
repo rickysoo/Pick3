@@ -1,17 +1,17 @@
-# Pick3 - AI-Powered Product Comparison Tool
+# Pick3 - AI-Powered Comparison Tool
 
-**Find the perfect product in seconds with intelligent AI comparisons**
+**Find Your Perfect Choice in seconds with intelligent AI comparisons**
 
-Pick3 is a smart web application that helps you make informed purchasing decisions by comparing products side-by-side. Simply describe what you're looking for, and our AI will find authentic products from real brands with detailed feature comparisons.
+Pick3 is a smart web application that helps you make informed decisions by comparing products, services, and local businesses side-by-side. Simply describe what you're looking for, and our AI will find authentic options with detailed feature comparisons.
 
 ![Pick3 App Preview](https://img.shields.io/badge/Status-Live-brightgreen) ![Version](https://img.shields.io/badge/Version-1.0-blue)
 
 ## 🌟 Key Features
 
-### ✨ **Intelligent Product Discovery**
-- Describe any product in natural language
-- AI finds 1-3 real products from established brands
-- No fictional or made-up products - only authentic data
+### ✨ **Intelligent Discovery**
+- Describe any product, service, or local business in natural language
+- AI finds 1-3 authentic options from established sources
+- No fictional or made-up information - only authentic data
 
 ### 📊 **Comprehensive Comparisons**
 - Side-by-side feature tables with 5-20 detailed specifications
@@ -19,9 +19,9 @@ Pick3 is a smart web application that helps you make informed purchasing decisio
 - Visual comparison cards for easy decision making
 
 ### 🛡️ **Data Authenticity**
-- Anti-hallucination technology prevents fake product information
-- Real pricing from authentic sources
-- Official manufacturer websites and verified specifications
+- Anti-hallucination technology prevents fake information
+- Real data from authentic sources
+- Official websites and verified information
 
 ### 📱 **User-Friendly Design**
 - Mobile-responsive interface works on all devices
@@ -49,7 +49,7 @@ Get detailed comparison tables showing:
 - Official website links
 
 ### 4. **Make Informed Decisions**
-Use the comprehensive feature comparisons to choose the product that best fits your needs and budget.
+Use the comprehensive feature comparisons to choose the option that best fits your needs and budget.
 
 ## 💡 Search Tips
 
@@ -59,23 +59,23 @@ Use the comprehensive feature comparisons to choose the product that best fits y
 - Mention use case: "for gaming", "for travel", "for students"
 - Add location if relevant: "available in Malaysia", "with local warranty"
 
-**Search Categories That Work Well:**
-- Electronics (smartphones, laptops, headphones, tablets)
-- Home appliances (smart speakers, coffee makers, air purifiers)
-- Fitness equipment (smartwatches, fitness trackers, exercise bikes)
-- Gaming gear (consoles, keyboards, mice, monitors)
-- Travel items (luggage, cameras, portable chargers)
+**Universal Search Categories:**
+- Products: Electronics, appliances, gaming gear, fitness equipment
+- Services: Software platforms, business tools, online services
+- Local businesses: Restaurants, cafes, professional services
+- Brands: Any established company or manufacturer
+- Specific needs: Budget constraints, feature requirements, use cases
 
 ## 🔍 What Makes Pick3 Special
 
 ### **Real Data Only**
-Pick3 never shows fictional products or made-up information. Every product, price, and specification comes from authentic sources, ensuring you can trust the comparisons.
+Pick3 never shows fictional information. Every option, price, and specification comes from authentic sources, ensuring you can trust the comparisons.
 
 ### **Intelligent Feature Selection**
-The AI automatically selects the most relevant features for comparison based on your search. Complex products like smartphones get 10-15 features, while simpler products focus on 6-10 key specifications.
+The AI automatically selects the most relevant features for comparison based on your search. Complex items get 10-15 features, while simpler options focus on 6-10 key specifications.
 
 ### **Current Information**
-All searches include today's date to ensure you get the most up-to-date product information and avoid outdated references.
+All searches include today's date to ensure you get the most up-to-date information and avoid outdated references.
 
 ## 🛠️ Technical Overview
 
