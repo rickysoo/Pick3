@@ -131,9 +131,10 @@ JSON format with: products (name, description, pricing, rating: null, website, l
         const flexibleResult = JSON.parse(flexibleResponse.choices[0].message.content || "{}");
         
         if (flexibleResult.products && flexibleResult.products.length > 0) {
+          const formattedFlexibleFeatures = await formatFeatureNames(flexibleResult.features || []);
           return {
             products: flexibleResult.products,
-            features: flexibleResult.features || [],
+            features: formattedFlexibleFeatures,
             message: flexibleResult.message || "Here are related products that might help with your needs."
           };
         }
@@ -142,9 +143,12 @@ JSON format with: products (name, description, pricing, rating: null, website, l
       }
     }
 
+    // Format feature names to proper English
+    const formattedFeatures = await formatFeatureNames(result.features || []);
+    
     return {
       products: result.products || [],
-      features: result.features || [],
+      features: formattedFeatures,
       message: result.message || ""
     };
   } catch (error) {
@@ -154,6 +158,37 @@ JSON format with: products (name, description, pricing, rating: null, website, l
       features: [],
       message: "An error occurred while processing your search. Please try again."
     };
+  }
+}
+
+async function formatFeatureNames(features: string[]): Promise<string[]> {
+  if (!features || features.length === 0) return features;
+  
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "Convert technical feature names to proper English labels. Examples: 'userFriendlyInterface' -> 'User-Friendly Interface', 'communityProjects' -> 'Community Projects', 'customBlocks' -> 'Custom Blocks', 'livePreview' -> 'Live Preview', 'projectSharing' -> 'Project Sharing', 'mobileResponsive' -> 'Mobile Responsive', 'blockCustomization' -> 'Block Customization', 'multiLanguageSupport' -> 'Multi-Language Support', 'integrationAbility' -> 'Integration Ability', 'smartCodeCompletion' -> 'Smart Code Completion', 'intelligentCodeEditor' -> 'Intelligent Code Editor', 'extensions' -> 'Extensions', 'debugger' -> 'Debugger', 'platforms' -> 'Supported Platforms', 'frameworks' -> 'Framework Support', 'refactoring' -> 'Code Refactoring'. Return a JSON object with 'features' array containing formatted feature names in the same order."
+        },
+        {
+          role: "user",
+          content: `Format these feature names: ${JSON.stringify(features)}`
+        }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || "{}");
+    return result.features || features;
+  } catch (error) {
+    console.error('Error formatting feature names:', error);
+    // Fallback: simple camelCase to Title Case conversion
+    return features.map(feature => 
+      feature.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).trim()
+    );
   }
 }
 
@@ -224,9 +259,10 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
           
           if (businesses.length > 0) {
             const features = getLocalBusinessFeatures(businessType);
+            const formattedLocalFeatures = await formatFeatureNames(features);
             return {
               products: businesses,
-              features,
+              features: formattedLocalFeatures,
               message: `Found ${businesses.length} verified ${businessType} location${businesses.length > 1 ? 's' : ''} in ${location} using real-time data from Google Places.`
             };
           }
