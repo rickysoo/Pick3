@@ -73,21 +73,53 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
       day: 'numeric' 
     });
 
-    // Check if this is a local business search
-    const isLocalSearch = /(coffee|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall).*(in|near|at|around)/i.test(searchData.searchQuery);
+    // Use LLM to determine if this is a local business search
+    const isLocalSearchResponse = await openai.chat.completions.create({
+      model: "gpt-4o-mini", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: "You are a search query classifier. Determine if a search query is looking for local businesses/services in a specific location. Respond with only 'true' or 'false'."
+        },
+        {
+          role: "user",
+          content: `Is this query looking for local businesses or services in a specific location? Query: "${searchData.searchQuery}"`
+        }
+      ],
+      max_tokens: 10,
+      temperature: 0
+    });
+
+    const isLocalSearch = isLocalSearchResponse.choices[0].message.content?.trim().toLowerCase() === 'true';
     
     console.log(`🔍 Query: "${searchData.searchQuery}", isLocalSearch: ${isLocalSearch}`);
     
     if (isLocalSearch) {
       console.log(`🏪 Processing local business search...`);
       try {
-        // Extract business type and location from search query
-        const businessTypeMatch = searchData.searchQuery.match(/(coffee\s*shops?|restaurants?|hotels?|gyms?|salons?|stores?|cafes?|bars?|pubs?|malls?|coffee)/i);
-        const locationMatch = searchData.searchQuery.match(/(?:in|near|at|around)\s+([A-Za-z\s]+)/i);
+        // Use LLM to extract business type and location
+        const extractionResponse = await openai.chat.completions.create({
+          model: "gpt-4o-mini", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+          messages: [
+            {
+              role: "system",
+              content: "Extract the business type and location from a local business search query. Respond with JSON format: {\"businessType\": \"type\", \"location\": \"location\"}. If either cannot be determined, use null."
+            },
+            {
+              role: "user",
+              content: `Extract business type and location from: "${searchData.searchQuery}"`
+            }
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: 50,
+          temperature: 0
+        });
+
+        const extraction = JSON.parse(extractionResponse.choices[0].message.content || '{}');
+        const businessType = extraction.businessType;
+        const location = extraction.location;
         
-        if (businessTypeMatch && locationMatch) {
-          const businessType = businessTypeMatch[1];
-          const location = locationMatch[1].trim();
+        if (businessType && location) {
           
           console.log(`Searching for ${businessType} in ${location} using Google Places API`);
           const businesses = await searchLocalBusinesses(businessType, location);
