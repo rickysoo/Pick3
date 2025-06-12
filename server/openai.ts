@@ -61,11 +61,11 @@ Please respond with a JSON object containing:
    - "rating": Always set to null
    - "website": Official website URL only
    - "logoUrl": null
-   - "features": Object with relevant features based on category
+   - "features": Object with 8-15 detailed, specific features based on category (avoid generic terms)
    - "badge": Descriptive badge text (e.g., "Most Popular", "Best Value", "Premium Choice")
    - "badgeColor": Badge color (green, blue, orange, purple)
 
-2. "features": Array of feature names that are compared across products
+2. "features": Array of 8-15 detailed feature names that are meaningfully compared across products
 3. "message": Explanatory message if needed`;
 
   try {
@@ -333,11 +333,11 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
       messages: [
         {
           role: "system",
-          content: "Generate 3 diverse, short search examples for a universal comparison app. Mix: products, services, local businesses. Examples: 'Gaming laptops under $1000', 'Dentists in Bangsar', 'Video editing software'. Keep under 8 words each. Return JSON: {\"examples\": [\"example1\", \"example2\", \"example3\"]}"
+          content: "Generate 3 detailed search examples for a universal comparison app. Make them complete, specific queries that clarify user intent. Include budget ranges, locations (specific cities/areas), and detailed preferences. Examples: 'Best gaming laptops under $1500 with RTX graphics for content creation', 'Top-rated Italian restaurants in Kuala Lumpur with outdoor seating and delivery options', 'Project management software for small teams with budget tracking and mobile apps'. Each should be 10-20 words. Return JSON: {\"examples\": [\"query1\", \"query2\", \"query3\"]}"
         },
         {
           role: "user",
-          content: "Generate 3 varied search examples showing the app's universal capabilities"
+          content: "Generate 3 detailed search examples covering products, services, and local businesses with specific requirements"
         }
       ],
       response_format: { type: "json_object" },
@@ -349,24 +349,24 @@ export async function generatePlaceholderExamples(): Promise<string[]> {
     try {
       const result = JSON.parse(content);
       return result.examples || [
-        "Law firms in Kuala Lumpur",
-        "Gaming laptops under $1200", 
-        "Vegetarian restaurants in Bangsar"
+        "Best noise-cancelling headphones under $300 with long battery life for remote work",
+        "Top-rated family dentists in Bangsar with weekend appointments and insurance coverage",
+        "Cloud storage solutions for small businesses with collaboration tools and 24/7 support"
       ];
     } catch (parseError) {
       console.error('JSON parsing error:', parseError, 'Content:', content);
       return [
-        "Auto repair shops in Subang Jaya",
-        "Note-taking apps for students",
-        "Italian restaurants downtown KL"
+        "Affordable wedding photographers in Kuala Lumpur with same-day editing and drone services",
+        "Gaming monitors under $500 with 144Hz refresh rate and HDR support",
+        "Authentic Thai restaurants in Petaling Jaya with vegetarian options and delivery"
       ];
     }
   } catch (error) {
     console.error('Error generating examples:', error);
     return [
-      "Car insurance companies",
-      "Yoga studios in Petaling Jaya", 
-      "Project management software"
+      "Budget-friendly fitness centers in Shah Alam with personal training and group classes",
+      "Project management software for remote teams with time tracking and mobile apps",
+      "Reliable car mechanics in Subang Jaya specializing in Honda and Toyota servicing"
     ];
   }
 }

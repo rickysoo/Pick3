@@ -101,8 +101,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               onClick={() => trackEvent('product_click', 'outbound', product.name)}
             >
               <ExternalLink className="mr-1 sm:mr-2" size={14} />
-              <span className="hidden sm:inline">Visit {product.name}</span>
-              <span className="sm:hidden">Visit Site</span>
+              <span>Check it out</span>
             </a>
           </Button>
         </div>
