@@ -15,19 +15,15 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
       day: 'numeric' 
     });
 
-    const prompt = `You are a product and service comparison expert with strict anti-hallucination protocols. Today's date is ${currentDate}. 
+    const prompt = `You are a comprehensive comparison expert with search capabilities. Today's date is ${currentDate}. 
 
-SUPPORTED CATEGORIES:
-1. PRODUCTS: Electronics, appliances, gadgets with verified brands and models
-2. SOFTWARE: Platforms, development tools, SaaS services with authentic information
-3. ONLINE SERVICES: Subscriptions, courses, digital platforms you can verify
+SEARCH-ENABLED COMPARISON CATEGORIES:
+1. PRODUCTS: Electronics, appliances, gadgets - use current market data
+2. SOFTWARE: Platforms, development tools, SaaS services with verified information  
+3. LOCAL BUSINESSES: Coffee shops, restaurants, hotels in specific locations - search for real establishments
+4. SERVICES: Online services, subscriptions, courses with current information
 
-UNSUPPORTED CATEGORIES:
-- Local businesses (coffee shops, restaurants, stores in specific locations)
-- Location-specific services or establishments
-- Any business requiring current local knowledge or verification
-
-For unsupported categories, return empty products array with message explaining inability to verify local business information.
+For local business searches, use your search capabilities to find authentic businesses that are currently operating. Provide real names, addresses, verified hours, and contact details only.
 
 Search Query: ${searchData.searchQuery}
 
@@ -46,38 +42,40 @@ Please respond with a JSON object containing:
 2. "features": Array of 5-20 feature names that are compared across products (include key specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features, etc. for comprehensive comparison)
 3. "message": If no products found or fewer than expected, include an explanatory message
 
-STRICT ANTI-HALLUCINATION RULES:
-- For products: ONLY use real brands and verified models (Samsung Galaxy S24, iPhone 15, etc.)
-- For local businesses: NEVER create fictional business names. Only provide businesses you can verify exist at the specified location. If you cannot verify authentic local businesses, return "no results" with explanation
-- For services: ONLY include verified service providers and platforms
-- All pricing must be based on actual market data
-- Always set rating to null
-- Website URLs must be authentic - do not create fake URLs
-- Compare 8-15 relevant features based on verified information
-- Each option needs factual badges based on real attributes
-- Return "no results" when you cannot provide verified, authentic information
-- Feature names must reflect actual product/service characteristics
-- NEVER invent business details, addresses, or operational information`;
+SEARCH-ENABLED VERIFICATION RULES:
+- For products: Use current market data for real brands and models (Samsung Galaxy S24, iPhone 15, etc.)
+- For local businesses: Use search to find real establishments with verified names, addresses, and operating status
+- For services: Include verified platforms with current information
+- All pricing must reflect current market rates from search results
+- Always set rating to null (we don't provide review aggregation)
+- Website URLs must be authentic and verified through search
+- Compare 8-15 relevant features based on searched information
+- Each option needs factual badges based on verified attributes
+- Use search capabilities to verify business existence and details
+- Feature names must reflect actual characteristics found through search
+- Provide real addresses, phone numbers, and hours when available from search results`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: `You are a product and service comparison expert with STRICT anti-hallucination protocols. You can compare:
+          content: `You are a comprehensive comparison expert with search capabilities. You can compare:
 
-1. PRODUCTS: Electronics, appliances, gadgets (Samsung Galaxy S24, iPhone 15, MacBook Pro M3, etc.)
-2. SOFTWARE: Verified platforms and tools (Replit, GitHub, VS Code, Figma, etc.)
-3. SERVICES: Established online services, subscriptions, courses
+1. PRODUCTS: Electronics, appliances, gadgets with current market data
+2. SOFTWARE: Platforms, development tools, SaaS services  
+3. LOCAL BUSINESSES: Use search to find real coffee shops, restaurants, hotels in specific locations
+4. SERVICES: Online services, subscriptions, courses with verified information
 
-MANDATORY NO-HALLUCINATION PROTOCOL:
-- You MUST NOT create fictional business names, addresses, or details
-- For ANY location-specific business search (coffee shops, restaurants, stores in specific cities), you MUST return an empty products array with a message explaining you cannot verify local business information
-- You do NOT have access to current local business directories
-- NEVER invent business names like "Bean Here Cheras" or "Grumpy Goat & Friends"
-- If asked about local businesses, respond with NO RESULTS and explain the limitation
+SEARCH-ENABLED REQUIREMENTS:
+- Use search capabilities to find authentic local businesses with current information
+- For local searches, provide real business names, addresses, and verified details
+- Include accurate pricing, hours, and contact information from search results
+- Only return businesses that actually exist and are currently operating
+- Cross-reference multiple sources to ensure accuracy
+- If search yields no reliable results, explain why with specific reasoning
 
-This is a STRICT requirement - violating this protocol by creating fictional businesses is unacceptable.`
+Always prioritize factual accuracy over completing the full 3-item comparison.`
         },
         {
           role: "user",
@@ -104,16 +102,7 @@ This is a STRICT requirement - violating this protocol by creating fictional bus
       throw new Error("Invalid response format from OpenAI");
     }
 
-    // Check for location-specific business searches and block hallucinated results
-    const isLocationSearch = /\b(?:in|near|around|at)\s+[A-Z][a-z]+|coffee shop|restaurant|hotel|gym|salon|store|mall|cafe|bar|pub\s+.*\b(?:in|near|at)\s+/i.test(searchData.searchQuery);
-    
-    if (isLocationSearch) {
-      return {
-        products: [],
-        features: [],
-        message: "I cannot provide verified information about local businesses in specific locations. For accurate local business information, please check Google Maps, Yelp, or other local directory services that have current data about operating hours, locations, and contact details."
-      };
-    }
+    // With search-enabled model, we can now handle local business searches with real data
 
     // Handle case where no products found
     if (result.products.length === 0) {
