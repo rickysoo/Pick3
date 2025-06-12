@@ -15,9 +15,18 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
       day: 'numeric' 
     });
 
-    const prompt = `You are a product comparison expert. Today's date is ${currentDate}. Based on the following search query, find and compare relevant products or services using the most current information available as of this date.
+    const prompt = `You are a comprehensive comparison expert. Today's date is ${currentDate}. Compare ANY of these categories based on the search query:
 
-IMPORTANT: Find real products and services from established companies that match the search criteria. For physical products use brands like Samsung, Apple, Xiaomi, Sony. For software/services include coding platforms like Replit, GitHub Codespaces, VS Code, Visual Studio, development tools, SaaS platforms, etc. Use actual product names and realistic pricing. Return 3 products when possible, representing different value propositions. Only return "no results" for impossible or fictional categories.
+VALID CATEGORIES TO COMPARE:
+1. PRODUCTS: Electronics, appliances, gadgets, physical items
+2. SOFTWARE: Apps, platforms, development tools, SaaS services  
+3. LOCAL BUSINESSES: Coffee shops, restaurants, hotels, salons, gyms, stores in specific cities/neighborhoods
+4. SERVICES: Online services, subscriptions, courses, professional services
+5. EXPERIENCES: Travel destinations, activities, entertainment venues
+
+For LOCAL BUSINESS searches like "coffee shops in [location]": Provide 3 realistic business examples with names, specialties, atmosphere, pricing ranges, and location details. These are valid comparisons that help users choose where to go.
+
+ALWAYS provide 3 options unless the search is genuinely impossible (like "time travel cafes").
 
 Search Query: ${searchData.searchQuery}
 
@@ -29,7 +38,7 @@ Please respond with a JSON object containing:
    - "rating": NEVER provide ratings - always set to null since you cannot verify authentic rating sources
    - "website": Official website URL only - must be accurate
    - "logoUrl": null (do not include logo URLs)
-   - "features": Object with 10-15 key features for complex products (smartphones, laptops) or 6-10 for simpler products - use clear, readable names (e.g., "Water Resistance" not "waterResistance") - include specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features
+   - "features": Object with relevant features based on category - for products: specs like display, processor, memory; for local businesses: atmosphere, price range, specialties, accessibility, hours, parking; for services: features, pricing tiers, support, integrations
    - "badge": REQUIRED badge text for each product based on factual comparison (e.g., "Most Popular", "Most Affordable", "Best Value", "Premium Choice", "Editor's Pick") - ensure each product gets a unique descriptive badge
    - "badgeColor": Badge color (green, blue, orange, purple)
 
@@ -37,23 +46,32 @@ Please respond with a JSON object containing:
 3. "message": If no products found or fewer than expected, include an explanatory message
 
 IMPORTANT RULES:
-- For common product categories (smartphones, laptops, headphones, etc.), provide 3 real products from different brands
-- Use well-known companies and their actual products (Samsung, Apple, Xiaomi, etc.)
-- Include realistic pricing ranges based on the search criteria
+- For products: provide real brands and models (Samsung, Apple, Xiaomi, etc.)
+- For local businesses: provide specific business names or realistic examples from the area
+- For services: include actual service providers, apps, or platforms
+- Include realistic pricing and relevant details
 - Always set rating to null
-- Use official website URLs from major manufacturers
-- Compare 5-20 features relevant to the product category (more features for complex products like smartphones/laptops, fewer for simple products)
-- Each product needs a unique badge (Most Popular, Best Value, Premium Choice, etc.)
-- Only return "no results" for truly impossible or non-existent product categories
-- Feature names should be readable (e.g., "Fast Charging" not "fastCharging")
-- Keep pricing under 15 characters and use currency specified in search`;
+- Use appropriate website URLs (official sites for products, business websites for local places)
+- Compare 8-15 relevant features based on the category
+- Each option needs a unique badge (Most Popular, Best Value, Local Favorite, etc.)
+- Only return "no results" for impossible searches like "unicorn cafes" or "time travel services"
+- Feature names should be readable and relevant to the category
+- For local searches, consider location-specific factors (accessibility, atmosphere, specialties)`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: `You are a product comparison expert. Find real products and services from established companies that match the search. For physical products use brands like Samsung, Apple, Xiaomi, Sony. For software/services include platforms like Replit, GitHub Codespaces, VS Code, Visual Studio, IntelliJ, Figma, Notion, Slack, CodePen, Glitch, etc. Include coding platforms, IDEs, and development tools as valid product categories. Return 3 products when possible. Set rating to null. Include 8-12 key features. Only return empty results for impossible searches like "unicorn saddles" or "time travel machines".`
+          content: `You are a comprehensive comparison expert helping users make informed decisions about products, services, AND local businesses. You can compare:
+
+1. PRODUCTS: Electronics, appliances, gadgets from brands like Samsung, Apple
+2. SOFTWARE: Apps, platforms, tools like Replit, VS Code, Notion  
+3. LOCAL BUSINESSES: Coffee shops, restaurants, hotels, services in specific cities/areas
+4. SERVICES: Subscriptions, courses, memberships, professional services
+5. EXPERIENCES: Travel destinations, activities, events
+
+For local business searches (like "coffee shops in [city]"), provide 3 real or realistic business examples from that area with relevant features like atmosphere, pricing, specialties, location, hours. Always return valid comparisons unless the search is genuinely impossible. Set rating to null.`
         },
         {
           role: "user",
