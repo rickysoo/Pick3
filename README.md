@@ -158,4 +158,4 @@ Having issues or suggestions? We'd love to hear from you:
 
 **Made with ❤️ for smart shoppers everywhere**
 
-*Pick3 helps you make better purchasing decisions with AI-powered authentic product comparisons.*
+*Pick3 helps you make better decisions with AI-powered authentic comparisons.*
