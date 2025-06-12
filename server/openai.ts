@@ -15,18 +15,19 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
       day: 'numeric' 
     });
 
-    const prompt = `You are a comprehensive comparison expert. Today's date is ${currentDate}. Compare ANY of these categories based on the search query:
+    const prompt = `You are a product and service comparison expert with strict anti-hallucination protocols. Today's date is ${currentDate}. 
 
-VALID CATEGORIES TO COMPARE:
-1. PRODUCTS: Electronics, appliances, gadgets, physical items
-2. SOFTWARE: Apps, platforms, development tools, SaaS services  
-3. LOCAL BUSINESSES: Coffee shops, restaurants, hotels, salons, gyms, stores in specific cities/neighborhoods
-4. SERVICES: Online services, subscriptions, courses, professional services
-5. EXPERIENCES: Travel destinations, activities, entertainment venues
+SUPPORTED CATEGORIES:
+1. PRODUCTS: Electronics, appliances, gadgets with verified brands and models
+2. SOFTWARE: Platforms, development tools, SaaS services with authentic information
+3. ONLINE SERVICES: Subscriptions, courses, digital platforms you can verify
 
-For LOCAL BUSINESS searches like "coffee shops in [location]": Provide 3 realistic business examples with names, specialties, atmosphere, pricing ranges, and location details. These are valid comparisons that help users choose where to go.
+UNSUPPORTED CATEGORIES:
+- Local businesses (coffee shops, restaurants, stores in specific locations)
+- Location-specific services or establishments
+- Any business requiring current local knowledge or verification
 
-ALWAYS provide 3 options unless the search is genuinely impossible (like "time travel cafes").
+For unsupported categories, return empty products array with message explaining inability to verify local business information.
 
 Search Query: ${searchData.searchQuery}
 
@@ -45,33 +46,38 @@ Please respond with a JSON object containing:
 2. "features": Array of 5-20 feature names that are compared across products (include key specs like display, processor, memory, storage, camera, battery, connectivity, build quality, special features, etc. for comprehensive comparison)
 3. "message": If no products found or fewer than expected, include an explanatory message
 
-IMPORTANT RULES:
-- For products: provide real brands and models (Samsung, Apple, Xiaomi, etc.)
-- For local businesses: provide specific business names or realistic examples from the area
-- For services: include actual service providers, apps, or platforms
-- Include realistic pricing and relevant details
+STRICT ANTI-HALLUCINATION RULES:
+- For products: ONLY use real brands and verified models (Samsung Galaxy S24, iPhone 15, etc.)
+- For local businesses: NEVER create fictional business names. Only provide businesses you can verify exist at the specified location. If you cannot verify authentic local businesses, return "no results" with explanation
+- For services: ONLY include verified service providers and platforms
+- All pricing must be based on actual market data
 - Always set rating to null
-- Use appropriate website URLs (official sites for products, business websites for local places)
-- Compare 8-15 relevant features based on the category
-- Each option needs a unique badge (Most Popular, Best Value, Local Favorite, etc.)
-- Only return "no results" for impossible searches like "unicorn cafes" or "time travel services"
-- Feature names should be readable and relevant to the category
-- For local searches, consider location-specific factors (accessibility, atmosphere, specialties)`;
+- Website URLs must be authentic - do not create fake URLs
+- Compare 8-15 relevant features based on verified information
+- Each option needs factual badges based on real attributes
+- Return "no results" when you cannot provide verified, authentic information
+- Feature names must reflect actual product/service characteristics
+- NEVER invent business details, addresses, or operational information`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: `You are a comprehensive comparison expert helping users make informed decisions about products, services, AND local businesses. You can compare:
+          content: `You are a product and service comparison expert with STRICT anti-hallucination protocols. You can compare:
 
-1. PRODUCTS: Electronics, appliances, gadgets from brands like Samsung, Apple
-2. SOFTWARE: Apps, platforms, tools like Replit, VS Code, Notion  
-3. LOCAL BUSINESSES: Coffee shops, restaurants, hotels, services in specific cities/areas
-4. SERVICES: Subscriptions, courses, memberships, professional services
-5. EXPERIENCES: Travel destinations, activities, events
+1. PRODUCTS: Electronics, appliances, gadgets (Samsung Galaxy S24, iPhone 15, MacBook Pro M3, etc.)
+2. SOFTWARE: Verified platforms and tools (Replit, GitHub, VS Code, Figma, etc.)
+3. SERVICES: Established online services, subscriptions, courses
 
-For local business searches (like "coffee shops in [city]"), provide 3 real or realistic business examples from that area with relevant features like atmosphere, pricing, specialties, location, hours. Always return valid comparisons unless the search is genuinely impossible. Set rating to null.`
+MANDATORY NO-HALLUCINATION PROTOCOL:
+- You MUST NOT create fictional business names, addresses, or details
+- For ANY location-specific business search (coffee shops, restaurants, stores in specific cities), you MUST return an empty products array with a message explaining you cannot verify local business information
+- You do NOT have access to current local business directories
+- NEVER invent business names like "Bean Here Cheras" or "Grumpy Goat & Friends"
+- If asked about local businesses, respond with NO RESULTS and explain the limitation
+
+This is a STRICT requirement - violating this protocol by creating fictional businesses is unacceptable.`
         },
         {
           role: "user",
