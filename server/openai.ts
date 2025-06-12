@@ -65,6 +65,8 @@ Use your search capabilities to find authentic businesses. Return JSON with veri
 
 export async function compareProducts(searchData: InsertSearchRequest): Promise<ComparisonResponse> {
   try {
+    console.log(`🔍 Starting compareProducts with query: "${searchData.searchQuery}"`);
+    
     const currentDate = new Date().toLocaleDateString('en-US', { 
       year: 'numeric', 
       month: 'long', 
@@ -74,9 +76,10 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
     // Check if this is a local business search
     const isLocalSearch = /(coffee|restaurant|hotel|gym|salon|store|cafe|bar|pub|mall).*(in|near|at|around)/i.test(searchData.searchQuery);
     
-    console.log(`Query: "${searchData.searchQuery}", isLocalSearch: ${isLocalSearch}`);
+    console.log(`🔍 Query: "${searchData.searchQuery}", isLocalSearch: ${isLocalSearch}`);
     
     if (isLocalSearch) {
+      console.log(`🏪 Processing local business search...`);
       try {
         // Extract business type and location from search query
         const businessTypeMatch = searchData.searchQuery.match(/(coffee\s*shops?|restaurants?|hotels?|gyms?|salons?|stores?|cafes?|bars?|pubs?|malls?|coffee)/i);
@@ -106,6 +109,14 @@ export async function compareProducts(searchData: InsertSearchRequest): Promise<
         };
       } catch (error) {
         console.log('Google Places API error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        if (errorMessage.includes('access denied') || errorMessage.includes('REQUEST_DENIED')) {
+          return {
+            products: [],
+            features: [],
+            message: "Google Places API requires additional setup. Please ensure the API key has Places API enabled and billing configured in Google Cloud Console. For now, please use Google Maps directly for local business information."
+          };
+        }
         return {
           products: [],
           features: [],

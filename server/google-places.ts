@@ -37,6 +37,9 @@ export async function searchLocalBusinesses(query: string, location: string): Pr
     const data: PlacesSearchResponse = await response.json();
     
     if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
+      if (data.status === 'REQUEST_DENIED') {
+        throw new Error(`Google Places API access denied. Please ensure the API key has Places API enabled and proper billing configured in Google Cloud Console.`);
+      }
       throw new Error(`Google Places API error: ${data.status}`);
     }
 
