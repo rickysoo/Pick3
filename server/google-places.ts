@@ -99,23 +99,23 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
   const isCoffeeShop = place.types.includes('cafe') || place.name.toLowerCase().includes('coffee') || place.name.toLowerCase().includes('cafe');
   
   const features: Record<string, boolean | string> = {
-    "address": place.formatted_address || "Address not available",
-    "price_range": pricingMap[priceLevel as keyof typeof pricingMap] || "$$",
-    "currently_open": place.opening_hours?.open_now ? "Yes" : "No",
-    "phone": place.formatted_phone_number || "Not available",
-    "business_status": place.business_status === 'OPERATIONAL' ? "Open" : "Status unknown"
+    "Address": place.formatted_address || "Address not available",
+    "Price Range": pricingMap[priceLevel as keyof typeof pricingMap] || "$$",
+    "Currently Open": place.opening_hours?.open_now ? "Yes" : "No",
+    "Phone Number": place.formatted_phone_number || "Not available",
+    "Business Status": place.business_status === 'OPERATIONAL' ? "Open" : "Status unknown"
   };
 
   if (isCoffeeShop) {
-    features["specialties"] = "Coffee & beverages";
-    features["atmosphere"] = "Cafe environment";
+    features["Specialties"] = "Coffee & beverages";
+    features["Atmosphere"] = "Cafe environment";
   } else if (isRestaurant) {
-    features["cuisine"] = "Various dishes";
-    features["dining"] = "Restaurant experience";
+    features["Cuisine"] = "Various dishes";
+    features["Dining Experience"] = "Restaurant experience";
   }
 
   if (place.opening_hours?.weekday_text) {
-    features["hours"] = place.opening_hours.weekday_text[0] || "Hours not available";
+    features["Operating Hours"] = place.opening_hours.weekday_text[0] || "Hours not available";
   }
 
   // Generate appropriate badge
@@ -150,13 +150,13 @@ function formatAsComparisonResult(place: GooglePlace): ComparisonResult {
 }
 
 export function getLocalBusinessFeatures(businessType: string): string[] {
-  const commonFeatures = ["address", "price_range", "currently_open", "phone", "business_status"];
+  const commonFeatures = ["Address", "Price Range", "Currently Open", "Phone Number", "Business Status"];
   
   if (businessType.includes('coffee') || businessType.includes('cafe')) {
-    return [...commonFeatures, "specialties", "atmosphere", "hours"];
+    return [...commonFeatures, "Specialties", "Atmosphere", "Operating Hours"];
   } else if (businessType.includes('restaurant')) {
-    return [...commonFeatures, "cuisine", "dining", "hours"];
+    return [...commonFeatures, "Cuisine", "Dining Experience", "Operating Hours"];
   } else {
-    return [...commonFeatures, "hours", "services"];
+    return [...commonFeatures, "Operating Hours", "Services"];
   }
 }
